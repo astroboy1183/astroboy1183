@@ -2,7 +2,7 @@
 
 Data engineer building AI systems. I study DSA daily and run a fleet of
 autonomous agents that manage my mornings, my money, my machine, and my
-code.
+code. Portfolio site: **[jayanthappalla.com](https://jayanthappalla.com)**
 
 ## 🤖 The agent fleet
 
@@ -11,8 +11,8 @@ Telegram bot. Dispatched at their **exact minute** by a Cloudflare
 Worker ([fleet-scheduler](https://github.com/astroboy1183/fleet-scheduler)
 — GitHub's own cron ran 4 hours late the morning I measured it; the
 Worker's dispatches land in ~6 seconds), with guarded GitHub crons as
-backups, failure alerts to Telegram, offline test suites running in CI,
-and state memory the workflows commit back after every run — the agents
+backups, failure alerts to Telegram, offline test suites in CI, and
+state memory the workflows commit back after every run — the agents
 remember yesterday.
 
 | Agent | What it does | When (IST) |
@@ -35,8 +35,15 @@ remember yesterday.
 health, 21:30) and
 [daily-review](https://github.com/astroboy1183/daily-review) (day
 review + fleet watchdog, 22:15) — that keep the machine and the fleet
-itself honest. The whole workspace assembles itself in a Codespace from
-the [fleet hub repo](https://github.com/astroboy1183/fleet).
+itself honest.
+
+### 🧱 Fleet infrastructure
+
+| Repo | Role |
+|---|---|
+| [fleet-scheduler](https://github.com/astroboy1183/fleet-scheduler) | The fleet's **clock**: a Cloudflare Worker dispatching every workflow at its exact minute |
+| [common](https://github.com/astroboy1183/common) | The **shared library**: one reference `agentlib.py`; every vendored copy is drift-checked against it nightly |
+| [fleet](https://github.com/astroboy1183/fleet) *(private)* | The **workspace hub**: a devcontainer + `clone-all.sh` that assembles all of the above in a Codespace |
 
 Every repo's README covers what it does, how the code works, and the
 design decisions — start with any of them.
@@ -51,6 +58,39 @@ design decisions — start with any of them.
   golden-question harness next
 - A **streaming pipeline** — Kafka → Spark Structured Streaming — over a
   live feed
+
+## 🛠 Projects & apps
+
+| Project | What it is |
+|---|---|
+| [DocMind](https://github.com/astroboy1183/DocMind) | Document AI — parsing and Q&A over documents (Python) |
+| [news-intelligence-platform](https://github.com/astroboy1183/news-intelligence-platform) | News aggregation & analysis platform (Python) |
+| [ipl-intelligence-platform](https://github.com/astroboy1183/ipl-intelligence-platform) | IPL cricket analytics (TypeScript) |
+| [election-dashboard](https://github.com/astroboy1183/election-dashboard) | Election results dashboard (TypeScript) |
+| [SmartDay-App](https://github.com/astroboy1183/SmartDay-App) | Day-planning app (TypeScript) |
+| [Quiz-App](https://github.com/astroboy1183/Quiz-App) | Quiz application (Python) |
+| [sentiment-analysis](https://github.com/astroboy1183/sentiment-analysis) | Sentiment analysis experiments (Python) |
+| [full-stack-ai-python](https://github.com/astroboy1183/full-stack-ai-python) | Full-stack AI app in Python |
+| [astroboy1183.github.io](https://github.com/astroboy1183/astroboy1183.github.io) | Source of [jayanthappalla.com](https://jayanthappalla.com) |
+
+## 📚 Learning in public
+
+- [Data-Structures-and-Algorithms](https://github.com/astroboy1183/Data-Structures-and-Algorithms)
+  — daily DSA practice; this is the repo my study-coach agent reads to
+  aim problems at my weak topics
+- [Leetcode-Problems](https://github.com/astroboy1183/Leetcode-Problems)
+  — LeetCode solutions
+- [Python-AI](https://github.com/astroboy1183/Python-AI) ·
+  [Python-AI-Notes](https://github.com/astroboy1183/Python-AI-Notes)
+  — Python for AI engineering: code and notes
+- [study-notes](https://github.com/astroboy1183/study-notes)
+  — Git & GitHub, core Python concepts
+- Coursework archive:
+  [IBM Data Science](https://github.com/astroboy1183/Coursera-IBM-Data-Science) ·
+  [Machine-Learning](https://github.com/astroboy1183/Machine-Learning) ·
+  [kaggle](https://github.com/astroboy1183/kaggle) ·
+  [Python-Masterclass](https://github.com/astroboy1183/Python-Masterclass) ·
+  [Java-Masterclass](https://github.com/astroboy1183/Java-Programming-Masterclass)
 
 ## 📌 Stack
 
