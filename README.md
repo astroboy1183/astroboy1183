@@ -25,8 +25,12 @@ notices when any cron doesn't fire.
 | [eng-blogs](https://github.com/astroboy1183/eng-blogs) | 18 company engineering blogs, silent on quiet days | 19:07 |
 | [repo-review](https://github.com/astroboy1183/repo-review) | Reviews my whole account's diffs daily + portfolio advice | 19:37 |
 
-…plus two local systemd agents (laptop housekeeper, end-of-day review)
-that keep the machine and the fleet itself honest.
+…plus two local systemd agents —
+[housekeeper](https://github.com/astroboy1183/housekeeper) and
+[daily-review](https://github.com/astroboy1183/daily-review) — that keep
+the machine and the fleet itself honest. The whole workspace assembles
+itself in a Codespace from the
+[fleet hub repo](https://github.com/astroboy1183/fleet).
 
 Every repo's README covers what it does, how the code works, and the
 design decisions — start with any of them.
