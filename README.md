@@ -5,7 +5,7 @@ autonomous agents that manage my mornings, my machine, and my code.
 
 ## 🤖 The agent fleet
 
-Thirteen single-purpose agents — each its own repo, schedule, and
+Fourteen single-purpose agents — each its own repo, schedule, and
 Telegram bot. Built on GitHub Actions + systemd with dedupe-guarded
 backup crons, instant failure alerts, and a nightly watchdog that
 notices when any cron doesn't fire.
@@ -20,6 +20,7 @@ notices when any cron doesn't fire.
 | [markets-brief](https://github.com/astroboy1183/markets-brief) | Nifty · Sensex · S&P · Nasdaq · USD/INR · gold · BTC | 07:33 |
 | [release-radar](https://github.com/astroboy1183/release-radar) | Weekly releases across my dependency stack | Mon 07:37 |
 | [study-coach](https://github.com/astroboy1183/study-coach) | One DSA problem/day, picked from my practice gaps | 08:07 |
+| [finance-tracker](https://github.com/astroboy1183/finance-tracker) | Income/expense tracking from bank alert emails | 08:31 |
 | [papers-digest](https://github.com/astroboy1183/papers-digest) | Weekly arXiv picks for LLM/data engineers | Sat 09:07 |
 | [eng-blogs](https://github.com/astroboy1183/eng-blogs) | 18 company engineering blogs, silent on quiet days | 19:07 |
 | [repo-review](https://github.com/astroboy1183/repo-review) | Reviews my whole account's diffs daily + portfolio advice | 19:37 |
