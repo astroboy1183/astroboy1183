@@ -12,7 +12,7 @@ mornings, my money, my machine, and my code.
 &nbsp;
 ![Dispatch](https://img.shields.io/badge/dispatch-~6s-238636?style=for-the-badge&logo=cloudflare&logoColor=white)
 
-📐 **How the whole fleet works, end to end → [ARCHITECTURE.md](ARCHITECTURE.md)**
+📐 **How the whole fleet works → [ARCHITECTURE.md](ARCHITECTURE.md)** · 🤖 **Every agent, in detail → [AGENTS.md](AGENTS.md)**
 
 </div>
 

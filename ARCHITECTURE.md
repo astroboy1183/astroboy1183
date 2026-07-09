@@ -347,6 +347,9 @@ Plus infrastructure: **`fleet-scheduler`** (the clock), **`common`** (the
 reference shared library), and **`fleet`** (the private workspace hub that
 assembles everything in a Codespace).
 
+> For a full per-agent breakdown — each one's data sources, pipeline, where
+> Claude is used, state, and design decisions — see **[AGENTS.md](AGENTS.md)**.
+
 ---
 
 ## Cost model
