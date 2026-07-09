@@ -1,10 +1,8 @@
 <div align="center">
 
-# Hi, I'm Jayanth 👋
+# Jayanth Appalla
 
-**Data engineer building AI systems.**
-I study DSA daily and run a fleet of autonomous agents that manage my
-mornings, my money, my machine, and my code.
+**Data engineer building AI systems that run themselves**
 
 [![Portfolio](https://img.shields.io/badge/Portfolio-jayanthappalla.com-6f42c1?style=for-the-badge&logo=safari&logoColor=white)](https://jayanthappalla.com)
 &nbsp;
@@ -18,16 +16,25 @@ mornings, my money, my machine, and my code.
 
 ---
 
+Every morning my phone lights up with messages I didn't write — the weather,
+what's in my inbox, where the markets opened, the one DSA problem I should
+solve today. They come from **14 agents I built**, each its own repo, schedule,
+and Telegram bot, running on nobody's server for pennies a month. They alert
+loudly when something breaks and stay silent when there's nothing to say.
+
+Data engineer by trade. I automate my own life for practice — and build it all
+in public.
+
+---
+
 ## 🤖 The agent fleet
 
-Fourteen single-purpose agents — each its own repo, schedule, and
-Telegram bot. Dispatched at their **exact minute** by a Cloudflare
-Worker ([fleet-scheduler](https://github.com/astroboy1183/fleet-scheduler)
-— GitHub's own cron ran 4 hours late the morning I measured it; the
-Worker's dispatches land in ~6 seconds), with guarded GitHub crons as
-backups, failure alerts to Telegram, offline test suites in CI, and
-state memory the workflows commit back after every run — the agents
-remember yesterday.
+The full morning-to-night lineup. Each is dispatched at its **exact minute**
+by a Cloudflare Worker ([fleet-scheduler](https://github.com/astroboy1183/fleet-scheduler)
+— GitHub's own cron ran 4 hours late the morning I measured it; the Worker's
+dispatches land in ~6 seconds), with guarded GitHub crons as backups, failure
+alerts to Telegram, offline test suites in CI, and state memory the workflows
+commit back after every run — so the agents remember yesterday.
 
 | Agent | What it does | When (IST) |
 |---|---|---|
