@@ -8,9 +8,9 @@ mornings, my money, my machine, and my code.
 
 [![Portfolio](https://img.shields.io/badge/Portfolio-jayanthappalla.com-6f42c1?style=for-the-badge&logo=safari&logoColor=white)](https://jayanthappalla.com)
 &nbsp;
-![Fleet](https://img.shields.io/badge/agents-14-1f6feb?style=for-the-badge&logo=githubactions&logoColor=white)
+[![Fleet](https://img.shields.io/badge/agents-14-1f6feb?style=for-the-badge&logo=githubactions&logoColor=white)](AGENTS.md)
 &nbsp;
-![Dispatch](https://img.shields.io/badge/dispatch-~6s-238636?style=for-the-badge&logo=cloudflare&logoColor=white)
+[![Dispatch](https://img.shields.io/badge/dispatch-~6s-238636?style=for-the-badge&logo=cloudflare&logoColor=white)](ARCHITECTURE.md)
 
 📐 **How the whole fleet works → [ARCHITECTURE.md](ARCHITECTURE.md)** · 🤖 **Every agent, in detail → [AGENTS.md](AGENTS.md)**
 
