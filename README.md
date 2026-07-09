@@ -1,8 +1,20 @@
+<div align="center">
+
 # Hi, I'm Jayanth 👋
 
-Data engineer building AI systems. I study DSA daily and run a fleet of
-autonomous agents that manage my mornings, my money, my machine, and my
-code. Portfolio site: **[jayanthappalla.com](https://jayanthappalla.com)**
+**Data engineer building AI systems.**
+I study DSA daily and run a fleet of autonomous agents that manage my
+mornings, my money, my machine, and my code.
+
+[![Portfolio](https://img.shields.io/badge/Portfolio-jayanthappalla.com-6f42c1?style=for-the-badge&logo=safari&logoColor=white)](https://jayanthappalla.com)
+&nbsp;
+![Fleet](https://img.shields.io/badge/agents-14-1f6feb?style=for-the-badge&logo=githubactions&logoColor=white)
+&nbsp;
+![Dispatch](https://img.shields.io/badge/dispatch-~6s-238636?style=for-the-badge&logo=cloudflare&logoColor=white)
+
+</div>
+
+---
 
 ## 🤖 The agent fleet
 
@@ -45,8 +57,10 @@ itself honest.
 | [common](https://github.com/astroboy1183/common) | The **shared library**: one reference `agentlib.py`; every vendored copy is drift-checked against it nightly |
 | [fleet](https://github.com/astroboy1183/fleet) *(private)* | The **workspace hub**: a devcontainer + `clone-all.sh` that assembles all of the above in a Codespace |
 
-Every repo's README covers what it does, how the code works, and the
-design decisions — start with any of them.
+> Every repo's README covers what it does, how the code works, and the
+> design decisions — start with any of them.
+
+---
 
 ## 🔭 Currently building
 
@@ -58,6 +72,8 @@ design decisions — start with any of them.
   golden-question harness next
 - A **streaming pipeline** — Kafka → Spark Structured Streaming — over a
   live feed
+
+---
 
 ## 🛠 Projects & apps
 
@@ -72,6 +88,8 @@ design decisions — start with any of them.
 | [sentiment-analysis](https://github.com/astroboy1183/sentiment-analysis) | Sentiment analysis experiments (Python) |
 | [full-stack-ai-python](https://github.com/astroboy1183/full-stack-ai-python) | Full-stack AI app in Python |
 | [astroboy1183.github.io](https://github.com/astroboy1183/astroboy1183.github.io) | Source of [jayanthappalla.com](https://jayanthappalla.com) |
+
+---
 
 ## 📚 Learning in public
 
@@ -92,7 +110,19 @@ design decisions — start with any of them.
   [Python-Masterclass](https://github.com/astroboy1183/Python-Masterclass) ·
   [Java-Masterclass](https://github.com/astroboy1183/Java-Programming-Masterclass)
 
+---
+
 ## 📌 Stack
 
-Python · SQL · Spark · Kafka · Airflow · dbt · DuckDB · Qdrant ·
-GitHub Actions · Cloudflare Workers · systemd · LLM APIs
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
+![SQL](https://img.shields.io/badge/SQL-4479A1?style=flat-square&logo=postgresql&logoColor=white)
+![Apache Spark](https://img.shields.io/badge/Spark-E25A1C?style=flat-square&logo=apachespark&logoColor=white)
+![Apache Kafka](https://img.shields.io/badge/Kafka-231F20?style=flat-square&logo=apachekafka&logoColor=white)
+![Airflow](https://img.shields.io/badge/Airflow-017CEE?style=flat-square&logo=apacheairflow&logoColor=white)
+![dbt](https://img.shields.io/badge/dbt-FF694B?style=flat-square&logo=dbt&logoColor=white)
+![DuckDB](https://img.shields.io/badge/DuckDB-FFF000?style=flat-square&logo=duckdb&logoColor=black)
+![Qdrant](https://img.shields.io/badge/Qdrant-DC244C?style=flat-square&logo=qdrant&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-2088FF?style=flat-square&logo=githubactions&logoColor=white)
+![Cloudflare Workers](https://img.shields.io/badge/Cloudflare%20Workers-F38020?style=flat-square&logo=cloudflare&logoColor=white)
+![systemd](https://img.shields.io/badge/systemd-000000?style=flat-square&logo=linux&logoColor=white)
+![LLM APIs](https://img.shields.io/badge/LLM%20APIs-412991?style=flat-square&logo=anthropic&logoColor=white)
