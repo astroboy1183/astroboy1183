@@ -157,7 +157,7 @@ Each agent repo has a `<agent>.yml` workflow with three trigger types:
 ```yaml
 on:
   schedule:
-    - cron: '33 0 * * *'   # primary  (00:33 UTC = 06:03 IST) — backup path
+    - cron: '30 0 * * *'   # backup   (00:30 UTC = 06:00 IST)
     - cron: '33 1 * * *'   # backup   (1h later) — guard skips if primary delivered
   workflow_dispatch:        # the Cloudflare Worker (and manual "Run workflow")
     inputs: { source: '' }  # "scheduler" when dispatched by the Worker
@@ -237,7 +237,7 @@ via BotFather → get its token → open a chat with it → record my chat id.
 
 ## The full lifecycle of one message
 
-A cloud agent (weather-report, 06:03 IST) from tick to phone:
+A cloud agent (weather-report, 06:00 IST) from tick to phone:
 
 ```mermaid
 sequenceDiagram
@@ -328,7 +328,7 @@ Times are IST. "Brain" = whether the agent calls Claude.
 
 | Agent | When | Brain | What it delivers |
 |---|---|---|---|
-| weather-report | 06:03 | ⚙️ deterministic | 24-city forecast + AQI, severe-weather watch |
+| weather-report | 06:00 | ⚙️ deterministic | 24-city forecast + AQI, severe-weather watch |
 | mail-digest | 06:07 | 🧠 1× | Gmail → NEEDS ACTION / FYI / NOISE, deep links |
 | news-briefing | 06:13 | 🧠 1× | India / US / geopolitics, deduped, sourced |
 | cricket-scores | 06:17 &amp; 21:47 | 🧠 1× | notable matches only — silent otherwise |

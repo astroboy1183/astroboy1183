@@ -19,7 +19,7 @@ multi-call. Times are IST.
 
 ### weather-report
 - **Purpose:** Sends one deterministic morning Telegram forecast for 24 major cities across the US, Europe, India, Singapore and China, grouped by region.
-- **Schedule (IST):** 06:03 primary, 07:03 backup (`33 0 * * *` / `33 1 * * *` UTC).
+- **Schedule (IST):** 06:00 sharp via fleet-scheduler; backup crons 06:00/07:00 (`30 0 * * *` / `30 1 * * *` UTC).
 - **Inputs / data sources:** Open-Meteo forecast API (`api.open-meteo.com/v1/forecast`, no key) and Open-Meteo air-quality API (`air-quality-api.open-meteo.com/v1/air-quality`, US AQI). Cities are hardcoded coordinate tuples in the `REGIONS` dict.
 - **Pipeline:**
   1. Flatten `REGIONS` into a 24-city list.

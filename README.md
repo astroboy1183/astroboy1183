@@ -38,7 +38,7 @@ commit back after every run — so the agents remember yesterday.
 
 | Agent | What it does | When (IST) |
 |---|---|---|
-| [weather-report](https://github.com/astroboy1183/weather-report) | 24-city forecast + AQI, severe-weather watch, no LLM | 06:03 |
+| [weather-report](https://github.com/astroboy1183/weather-report) | 24-city forecast + AQI, severe-weather watch, no LLM | 06:00 |
 | [mail-digest](https://github.com/astroboy1183/mail-digest) | Gmail → NEEDS ACTION / FYI / NOISE, deep links, unsubscribe trends | 06:07 |
 | [news-briefing](https://github.com/astroboy1183/news-briefing) | India / US / geopolitics, deduped across days, sourced | 06:13 |
 | [cricket-scores](https://github.com/astroboy1183/cricket-scores) | Notable matches only — silent otherwise | 06:17 & 21:47 |
