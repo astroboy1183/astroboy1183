@@ -63,7 +63,7 @@ multi-call. Times are IST.
 
 ### news-briefing
 - **Purpose:** Sends one morning Telegram briefing of India, US and world/geopolitics headlines from RSS feeds, deduped and filtered to what a professional should know.
-- **Schedule (IST):** 06:13 primary, 07:13 backup (`43 0 * * *` / `43 1 * * *` UTC).
+- **Schedule (IST):** 06:00 sharp via fleet-scheduler; backup crons 06:00/07:00 (`30 0 * * *` / `30 1 * * *` UTC).
 - **Inputs / data sources:** Seven RSS feeds via `feedparser` — India: The Hindu, Times of India, Hindustan Times, Indian Express, LiveMint; US: NPR, NYT US; World: BBC World, Al Jazeera. Plus the Anthropic API and `state/seen.json`.
 - **Pipeline:**
   1. `load_seen` — load recently-briefed links (`state/seen.json`), pruned to a 3-day window.
