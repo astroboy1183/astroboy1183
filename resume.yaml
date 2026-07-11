@@ -1,61 +1,44 @@
 # Career facts — the single source of truth for the About, Experience
 # and Certifications sections of the profile README. Change jobs, add a
-# cert, publish a paper → edit HERE once; the nightly build rewrites
-# every section that mentions it. scripts/build_readme.py derives, never
-# invents.
+# cert, publish a paper → update via the resume-inbox (or edit here);
+# the nightly build rewrites every section that mentions it.
+# scripts/build_readme.py derives, never invents.
 
-years_experience: "~3 years"
-
+years_experience: ~3 years
 current:
   company: trigyan.io
   company_url: https://trigyan.io
   role: data engineer
   focus: building the data platform behind a healthcare product
-
 work:
-  - org: Trigyan
-    role: Data Engineer
-    current: true
-    note: data platform for a healthcare product
-  - org: Amazon Web Services
-    role: SDE, DynamoDB
-    note: >-
-      multi-TB backup/import/restore service; raised the import
-      S3-object limit 10k → 100k, cutting large import times ~20%;
-      on-call for a tier-1 service
-  - org: SPV Consulting
-    role: Data Engineer
-    note: >-
-      Azure Databricks pipelines at gigabyte scale (partitioning,
-      Z-ordering, caching), Bronze/Silver/Gold modeling, Power BI
-      delivery
-  - org: Earlier
-    note: >-
-      ServiceNow ITSM/ITOM integration work; SAP Analytics + Java/Spring
-      microservices at Incture; NLP chatbots intern at Hindustan
-      Unilever
-
-# Baseline list — merged nightly with the LIVE Credly badge list
-# (credly_user below), deduped by name. A new badge on Credly appears
-# here with zero edits; if Credly is unreachable this list stands alone.
+- org: Trigyan
+  role: Data Engineer
+  current: true
+  note: data platform for a healthcare product
+- org: SPV Consulting
+  role: Data Engineer
+  note: Azure Databricks pipelines at gigabyte scale (partitioning, Z-ordering,
+    caching), Bronze/Silver/Gold modeling, Power BI delivery
+- org: Amazon Web Services
+  role: SDE, DynamoDB
+  note: multi-TB backup/import/restore service; raised the import S3-object limit
+    10k → 100k, cutting large import times ~20%; on-call for a tier-1 service
+- org: Earlier
+  note: ServiceNow ITSM/ITOM integration and AWS-ServiceNow integration at I-ConnectResources
+    (certified ServiceNow Administrator, certified Appian developer); SAP Analytics
+    + Java/Spring microservices at Incture; NLP chatbots intern at Hindustan Unilever
 certifications:
-  - name: Microsoft Certified Fabric Data Engineer
-    year: 2025
-  - name: Databricks Certified Associate Data Engineer
-    year: 2025
-  - name: Microsoft Certified Administrator Associate
-    year: 2025
-  - name: Tableau Certified Desktop Specialist
-    year: 2024
-
+- name: Microsoft Certified Fabric Data Engineer
+  year: 2025
+- name: Databricks Certified Associate Data Engineer
+  year: 2025
+- name: Microsoft Certified Administrator Associate
+  year: 2025
+- name: Tableau Certified Desktop Specialist
+  year: 2024
 credly_user: jayanth-appalla
-
-publication: >-
-  **Publication:** *"Real-time Object Detection and Face Recognition
-  System to Assist the Visually Impaired"* — Journal of Physics:
-  Conference Series, Vol. 1706 (IOP), 2020 — YOLO + Kafka-streamed video
-  on Android.
-
-experience_footer: >-
-  Full resume on [my site](https://jayanthappalla.com) · full history on
-  [LinkedIn](https://www.linkedin.com/in/jayanth-appalla/).
+publication: '**Publication:** *"Real-time Object Detection and Face Recognition
+  System to Assist the Visually Impaired"* — Journal of Physics: Conference Series,
+  Vol. 1706 (IOP), 2020 — YOLO + Kafka-streamed video on Android.'
+experience_footer: Full resume on [my site](https://jayanthappalla.com) · full
+  history on [LinkedIn](https://www.linkedin.com/in/jayanth-appalla/).
