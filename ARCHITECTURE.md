@@ -336,7 +336,7 @@ Times are IST. "Brain" = whether the agent calls Claude.
 | papers-digest | Sat 06:00 | 🧠 2-3× | weekly arXiv: 7 categories (~2,500 papers) → 4 interest sections + HF-trending signal + 📌 spotlight |
 | eng-blogs | 06:00 | 🧠 2× | daily top-10 reading list from 38 blogs, interest-ranked, never repeats + growing RAG corpus |
 | repo-review | 06:00 | 🧠 2× | reviews every diff I push, remembers findings; 📈 rising repos |
-| housekeeper | 06:00 *(local)* | 🧠 1× | laptop health: disk, failed units, battery |
+| housekeeper | 06:00 *(local)* | 🧠 1× | laptop health: disk, units, memory/load, temps, kernel storage errors, 🧹 cleanup ledger, repo drift, trends |
 | daily-review | 22:15 *(local)* | 🧠 1× | day review + fleet watchdog |
 | repo-audit | on-demand *(button)* | 🧠 1×/repo | X-ray of all ~67 repos → committed dashboard + report.json (own UI site later) |
 

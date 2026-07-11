@@ -213,7 +213,7 @@ multi-call. Times are IST.
 - **Key dependencies:** `requests`, `anthropic`, `python-dotenv`.
 
 ### housekeeper
-- **Purpose:** Nightly health check of the owner's Linux Mint laptop that alerts (or sends an all-clear) to Telegram.
+- **Purpose:** Daily root-free laptop health check: disk usage, failed units, the fleet's own local timers, memory pressure/load, CPU temperature, kernel storage errors (the SMART substitute), Obsidian-vault git drift, repo drift across ~/agents + ~/Desktop, security updates, a 🧹 cleanup ledger (cache/trash/journald/autoremove), battery wear, and history-powered trends (disk growth; reboot-required escalates after 7 ignored days). Always sends — ✅ one-liner when healthy, ⚠️ summarized action list when not.
 - **Schedule (IST):** 06:00 daily (`OnCalendar=*-*-* 06:00:00`, `Persistent=true`, `RandomizedDelaySec=120`).
 - **Execution:** Local **systemd** user timer on the laptop (not GitHub Actions).
 - **Inputs / data sources:** System probes only — `shutil.disk_usage` on `/` and `/home`; `systemctl --failed` (system + user); Obsidian vault git state at `~/Desktop/Jayanth-Vault`; `apt list --upgradable`; `journalctl -p 3 -b`; `/var/run/reboot-required`; battery sysfs under `/sys/class/power_supply/BAT*`. Anthropic API only when there are issues to summarize.
