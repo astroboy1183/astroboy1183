@@ -343,6 +343,7 @@ Times are IST. "Brain" = whether the agent calls Claude.
 | repo-review | 06:00 | 🧠 2× | reviews every diff I push, remembers findings; 📈 rising repos |
 | housekeeper | 06:00 *(local)* | 🧠 1× | laptop health: disk, failed units, battery |
 | daily-review | 22:15 *(local)* | 🧠 1× | day review + fleet watchdog |
+| repo-audit | on-demand *(button)* | 🧠 1×/repo | X-ray of all ~67 repos → Pages dashboard + report.json |
 
 Plus infrastructure: **`fleet-scheduler`** (the clock), **`common`** (the
 reference shared library), and **`fleet`** (the private workspace hub that

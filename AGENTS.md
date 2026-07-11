@@ -286,6 +286,22 @@ multi-call. Times are IST.
 
 ## 💻 Local systemd agents (run on the laptop)
 
+### repo-audit
+- **Purpose:** The on-demand account X-ray — press a button and every repo (~67, forks and archived included) gets triaged and the active ones deep-read, producing a report card each (score /10, blunt verdict, top 3 actions, tagged findings), a published dashboard, and a Telegram summary of what to act on first.
+- **Schedule (IST):** none — `workflow_dispatch` only (GitHub's "Run workflow" button / `gh workflow run audit.yml`); the fleet's first on-demand member: no cron, no scheduler entry, no watchdog line.
+- **Inputs / data sources:** GitHub API via `REPOS_READ_TOKEN` (repo list, git trees, raw file contents, head SHAs) and the Anthropic API. Optional run inputs: `model` (default sonnet) and `limit` (first N repos, for testing).
+- **Pipeline:**
+  1. Phase 1, deterministic triage of every repo: hygiene /7 (README, description, license, tests, CI, .gitignore, topics), language, size, last-push age, open issues. Forks/archived stop here.
+  2. Phase 2, one model call per active repo over budgeted source (12 files / 30k chars, code first) → strict-JSON report card; unparseable replies degrade honestly, never sink the run.
+  3. Skip-unchanged: `state/audited.json` stores each repo's head SHA + review; re-audits only pay for repos that moved.
+  4. Outputs: `report/report.json` (the future UI's API), `docs/index.html` (self-contained dark dashboard, worst-first, published at jayanthappalla.com/repo-audit/ via GitHub Pages), Telegram summary (grade, bucket counts, five worst with one action each).
+- **LLM role:** 🧠 one call per changed repo — scoring and concrete actions; the hygiene checklist, buckets, sorting, HTML and summary are deterministic.
+- **State / memory:** `state/audited.json` (SHA-keyed report cards), committed back by the workflow along with the report and dashboard — every audit is versioned in git history.
+- **Notable design decisions:**
+  - Separate from repo-review on purpose: the daily drip and the on-demand X-ray are different products (trigger, cadence, output, cost).
+  - GitHub Pages is the front-end — zero servers, consistent with the fleet; phase two adds a Cloudflare Worker button page.
+- **Key dependencies:** `requests`, `anthropic`, `python-dotenv`.
+
 ### housekeeper
 - **Purpose:** Nightly health check of the owner's Linux Mint laptop that alerts (or sends an all-clear) to Telegram.
 - **Schedule (IST):** 06:00 daily (`OnCalendar=*-*-* 06:00:00`, `Persistent=true`, `RandomizedDelaySec=120`).
