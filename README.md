@@ -53,9 +53,8 @@ commit back after every run — so the agents remember yesterday.
 
 …plus two local systemd agents —
 [housekeeper](https://github.com/astroboy1183/housekeeper) (laptop
-health, 21:30) and
-— keeping the machine and the fleet
-itself honest.
+health + the fleet watchdog, 06:00) — keeping the machine and the
+fleet itself honest.
 
 ### 🧱 Fleet infrastructure
 
