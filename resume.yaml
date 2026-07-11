@@ -1,61 +1,51 @@
-# Career facts — the single source of truth for the About, Experience
-# and Certifications sections of the profile README. Change jobs, add a
-# cert, publish a paper → edit HERE once; the nightly build rewrites
-# every section that mentions it. scripts/build_readme.py derives, never
-# invents.
-
-years_experience: "~3 years"
-
+years_experience: ~4 years
 current:
-  company: trigyan.io
-  company_url: https://trigyan.io
+  company: trigyan
+  company_url: ''
   role: data engineer
   focus: building the data platform behind a healthcare product
-
 work:
-  - org: Trigyan
-    role: Data Engineer
-    current: true
-    note: data platform for a healthcare product
-  - org: Amazon Web Services
-    role: SDE, DynamoDB
-    note: >-
-      multi-TB backup/import/restore service; raised the import
-      S3-object limit 10k → 100k, cutting large import times ~20%;
-      on-call for a tier-1 service
-  - org: SPV Consulting
-    role: Data Engineer
-    note: >-
-      Azure Databricks pipelines at gigabyte scale (partitioning,
-      Z-ordering, caching), Bronze/Silver/Gold modeling, Power BI
-      delivery
-  - org: Earlier
-    note: >-
-      ServiceNow ITSM/ITOM integration work; SAP Analytics + Java/Spring
-      microservices at Incture; NLP chatbots intern at Hindustan
-      Unilever
-
-# Baseline list — merged nightly with the LIVE Credly badge list
-# (credly_user below), deduped by name. A new badge on Credly appears
-# here with zero edits; if Credly is unreachable this list stands alone.
+- org: Trigyan
+  role: Data Engineer
+  current: true
+  note: Building the data platform behind a healthcare product.
+- org: SPV Consulting LLC
+  role: Data Engineer
+  note: Built and optimized gigabyte-scale Azure Databricks pipelines using partitioning,
+    Z-ordering and caching; engineered Bronze/Silver/Gold layer workflows and
+    integrated Databricks with Power BI for dashboards and reports.
+- org: Amazon Web Services
+  role: Software Development Engineer
+  note: Worked on DynamoDB's scalable multi-TB backup, import, and restore service;
+    increased import S3 object count limit from 10,000 to 100,000, reducing import
+    time ~20% for large datasets; handled on-call operations for a high-traffic
+    tier-1 service.
+- org: I-ConnectResources Inc.
+  role: Programmer
+  note: Worked on ServiceNow ITSM/ITOM modules (Incident, Problem, Change, CMDB,
+    Discovery) and AWS-ServiceNow integration; Certified ServiceNow Administrator
+    and certified Appian developer.
+- org: Incture Technologies
+  role: Associate Software Engineer
+  note: Built SAP Analytics Cloud dashboards, Java/Spring MVC microservices for
+    geospatial analytics with Esri ArcGIS, and an e-commerce backend (Savory Stop)
+    with 14 microservices.
+- org: Earlier
+  note: Software Development Intern at Hindustan Unilever Pvt. Ltd (Aug 2019 -
+    Nov 2019) on chatbots/NLP team, built a Russian-language email bot using Google
+    Dialogflow.
 certifications:
-  - name: Microsoft Certified Fabric Data Engineer
-    year: 2025
-  - name: Databricks Certified Associate Data Engineer
-    year: 2025
-  - name: Microsoft Certified Administrator Associate
-    year: 2025
-  - name: Tableau Certified Desktop Specialist
-    year: 2024
-
+- name: Microsoft Certified Fabric Data Engineer
+  year: 2025
+- name: Databricks Certified Associate Data Engineer
+  year: 2025
+- name: Microsoft Certified Administrator Associate
+  year: 2025
+- name: Tableau Certified Desktop Specialist
+  year: 2024
 credly_user: jayanth-appalla
-
-publication: >-
-  **Publication:** *"Real-time Object Detection and Face Recognition
-  System to Assist the Visually Impaired"* — Journal of Physics:
-  Conference Series, Vol. 1706 (IOP), 2020 — YOLO + Kafka-streamed video
-  on Android.
-
-experience_footer: >-
-  Full resume on [my site](https://jayanthappalla.com) · full history on
-  [LinkedIn](https://www.linkedin.com/in/jayanth-appalla/).
+publication: '**Publication:** *"Real-time Object Detection and Face Recognition
+  System to Assist the Visually Impaired"* — Journal of Physics: Conference Series,
+  Volume 1706, 2020 — assistive vision system for visually impaired.'
+experience_footer: Full resume on [my site](https://jayanthappalla.com) · full
+  history on [LinkedIn](https://www.linkedin.com/in/jayanth-appalla/).
