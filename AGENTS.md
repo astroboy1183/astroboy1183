@@ -62,9 +62,9 @@ multi-call. Times are IST.
 - **Key dependencies:** `google-api-python-client`, `google-auth`, `google-auth-oauthlib`, `anthropic`, `requests`, `python-dotenv`.
 
 ### news-briefing
-- **Purpose:** Two Telegram editions a day — a full morning briefing (six sections: India, Indian politics, business, Hyderabad incl. Telugu media, US with the India-US corridor always kept, world) and a tight 21:00 evening wrap of only what broke after the morning, article-grounded and personalized by a watchlist.
+- **Purpose:** Two Telegram editions a day — a full morning briefing (seven sections: India, Indian politics, business, Hyderabad incl. Telugu media, US politics & immigration with visa/H-1B/corridor stories always kept, non-politics US, world) and a tight 21:00 evening wrap of only what broke after the morning, article-grounded and personalized by a watchlist.
 - **Schedule (IST):** 06:00 sharp and 21:00 via fleet-scheduler; backup crons 06:00/07:00/21:00/22:00 UTC-shifted (`30 0` / `30 1` / `30 15` / `30 16 * * *`), deduped by a 3-hour guard window.
-- **Inputs / data sources:** 36 verified RSS feeds via `feedparser` (each probed for reachability + freshness before inclusion; ~15 rejects documented in code), the selected stories' own article pages, the Anthropic API, `state/seen.json` + `state/briefed.json`, and the `NEWS_WATCH` secret (comma-separated personal topics).
+- **Inputs / data sources:** 41 verified RSS feeds via `feedparser` (each probed for reachability + freshness before inclusion; ~20 rejects documented in code), the selected stories' own article pages, the Anthropic API, `state/seen.json` + `state/briefed.json`, and the `NEWS_WATCH` secret (comma-separated personal topics).
 - **Pipeline:**
   1. `edition` — morning (full caps, 24h lookback) or evening (tight caps, 16h) by IST hour; a quiet evening stays silent.
   2. `gather_headlines` — up to 6 fresh entries per feed; dead feeds skipped, stale and already-seen links dropped; watchlist matches 👁-flagged deterministically.
@@ -76,13 +76,13 @@ multi-call. Times are IST.
   8. `send_telegram`, then record seen links and briefed keys (after the send).
 - **LLM role:** 🧠 2 Claude calls (3 on Sundays) — cheap model selects, strong model writes from fetched articles; freshness, seen-dedupe, watchlist enforcement and link validation are deterministic.
 - **State / memory:** `state/seen.json` (3 days — briefed once, and the evening wrap is new-only by construction) and `state/briefed.json` (7 days of what the bullets said — developments framed as developments, Sunday arcs), both committed back by the workflow.
-- **Output format:** Header (edition + candidate/feed counts), photo front page when the Top story carries an og:image, 🗞 Top line, then 📰 INDIA / 🏛 POLITICS / 💼 BUSINESS / 📍 HYDERABAD / 🇺🇸 US / 🌍 WORLD bullets (👁-prefixed for watchlist hits), each with its validated source link; 🗓 THE WEEK on Sundays.
+- **Output format:** Header (edition + candidate/feed counts), photo front page when the Top story carries an og:image, 🗞 Top line, then 📰 INDIA / 🏛 POLITICS / 💼 BUSINESS / 📍 HYDERABAD / 🗽 US POLITICS & IMMIGRATION / 🇺🇸 US / 🌍 WORLD bullets (👁-prefixed for watchlist hits), each with its validated source link; 🗓 THE WEEK on Sundays.
 - **Notable design decisions:**
   - Two-stage select/fetch/write: bullets carry numbers, names and consequences because they're written from articles, not headlines.
   - The watchlist guarantee is code-enforced (same pattern as mail-digest's VIP block), not just prompted.
   - The evening wrap exists because India's news cycle happens 9:00–21:00; the seen-memory makes it non-overlapping by construction.
   - Hallucinated links replaced with `[link removed: not in source feeds]`; the photo and week blocks are enrichments that can never sink the briefing.
-  - Tech and cricket deliberately excluded — handled by separate agents; US politics lives in the US section, 🏛 POLITICS is Indian politics.
+  - Tech and cricket deliberately excluded — handled by separate agents; politics is split by country (🏛 India, 🗽 US), with immigration guaranteed a slot in 🗽 by selector rule since no keyless immigration-only feed exists.
 - **Key dependencies:** `feedparser`, `anthropic`, `requests`, `python-dotenv`.
 
 ### cricket-scores

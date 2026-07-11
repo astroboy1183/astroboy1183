@@ -330,7 +330,7 @@ Times are IST. "Brain" = whether the agent calls Claude.
 |---|---|---|---|
 | weather-report | 06:00 | ⚙️ deterministic | 24-city forecast + AQI, severe-weather watch |
 | mail-digest | 06:07 &amp; 19:00 sweep | 🧠 1× | Gmail → VIP / NEEDS ACTION / CARRIED / deadline ledger, deep links |
-| news-briefing | 06:00 &amp; 21:00 wrap | 🧠 2× | 6 sections (incl. 🏛 politics) from 36 sources, article-grounded, 👁 watchlist |
+| news-briefing | 06:00 &amp; 21:00 wrap | 🧠 2× | 7 sections (incl. 🏛 India + 🗽 US politics/immigration) from 41 sources, article-grounded, 👁 watchlist |
 | cricket-scores | 06:17, 13:37 &amp; 21:47 | 🧠 1× | notable matches only — silent otherwise; Sun stats |
 | tech-news | 06:59 | 🧠 1× | sectioned tech briefing, HN ranked by points |
 | markets-brief | 07:33 | ⚙️ deterministic | Nifty · Sensex · S&amp;P · Nasdaq · USD/INR · gold · BTC |
