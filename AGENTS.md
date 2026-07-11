@@ -294,12 +294,12 @@ multi-call. Times are IST.
   1. Phase 1, deterministic triage of every repo: hygiene /7 (README, description, license, tests, CI, .gitignore, topics), language, size, last-push age, open issues. Forks/archived stop here.
   2. Phase 2, one model call per active repo over budgeted source (12 files / 30k chars, code first) → strict-JSON report card; unparseable replies degrade honestly, never sink the run.
   3. Skip-unchanged: `state/audited.json` stores each repo's head SHA + review; re-audits only pay for repos that moved.
-  4. Outputs: `report/report.json` (the future UI's API), `docs/index.html` (self-contained dark dashboard, worst-first, published at jayanthappalla.com/repo-audit/ via GitHub Pages), Telegram summary (grade, bucket counts, five worst with one action each).
+  4. Outputs: `report/report.json` (the future UI's API), `docs/index.html` (self-contained dark dashboard, worst-first, committed to the repo (own deployed site later — deliberately not the portfolio domain)), Telegram summary (grade, bucket counts, five worst with one action each).
 - **LLM role:** 🧠 one call per changed repo — scoring and concrete actions; the hygiene checklist, buckets, sorting, HTML and summary are deterministic.
 - **State / memory:** `state/audited.json` (SHA-keyed report cards), committed back by the workflow along with the report and dashboard — every audit is versioned in git history.
 - **Notable design decisions:**
   - Separate from repo-review on purpose: the daily drip and the on-demand X-ray are different products (trigger, cadence, output, cost).
-  - GitHub Pages is the front-end — zero servers, consistent with the fleet; phase two adds a Cloudflare Worker button page.
+  - The dashboard is a committed self-contained file; phase two deploys it to its own separate site with an auth-gated run button (not the portfolio domain).
 - **Key dependencies:** `requests`, `anthropic`, `python-dotenv`.
 
 ### housekeeper
