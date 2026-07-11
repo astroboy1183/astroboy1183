@@ -40,7 +40,7 @@ multi-call. Times are IST.
 
 ### mail-digest
 - **Purpose:** Sends one morning Telegram digest of all Gmail from the previous 24h, sorted into NEEDS ACTION / FYI / NOISE.
-- **Schedule (IST):** 06:07 primary, 07:07 backup (`37 0 * * *` / `37 1 * * *` UTC).
+- **Schedule (IST):** 06:00 primary, 07:00 backup (`30 0 * * *` / `30 1 * * *` UTC); 19:00 evening sweep.
 - **Inputs / data sources:** Gmail API (via `google-api-python-client`, `gmail.readonly` OAuth) — messages list + metadata-only fetch; the Anthropic API for summarization; `VIP_SENDERS` secret; `state/noise.json`.
 - **Pipeline:**
   1. `digest_window` — compute the anchored 24h window ending at the most recent 6:00 AM IST.
@@ -87,7 +87,7 @@ multi-call. Times are IST.
 
 ### cricket-scores
 - **Purpose:** Filters the ESPN Cricinfo live-scores board down to matches worth attention (India at any level, majors' internationals, IPL/WPL) and delivers them to Telegram twice a day.
-- **Schedule (IST):** ~06:17 (overnight matches, backup 07:17) and ~21:47 (day's results, backup 22:47).
+- **Schedule (IST):** 06:00 (overnight matches, backup 07:00), 13:37 lunch (India match days) and ~21:47 (day's results, backup 22:47).
 - **Inputs / data sources:** Cricinfo live-scores RSS (`https://static.cricinfo.com/rss/livescores.xml`) — up to 25 score-line titles.
 - **Pipeline:**
   1. `gather_scores()` parses the RSS with feedparser; returns `None` if unreachable (network error / HTTP ≥400 / bozo with no entries), `[]` if reached but empty, else up to 25 titles.
@@ -105,7 +105,7 @@ multi-call. Times are IST.
 
 ### tech-news
 - **Purpose:** The fleet's flagship — two Telegram editions a day covering the full tech landscape in nine sections (AI with primary sources, data engineering/science/analytics, cloud & infra, operating systems (Windows/Linux/macOS), software & dev, hardware, industry, India tech, security), every bullet carrying a '↳' background-context line plus deterministic blocks: HN TOP (the community's actual front page), PATCH NOW (CISA's actively-exploited CVE catalog) and a Saturday WEEK IN TECH; the five core topics run up to 10 stories deep.
-- **Schedule (IST):** ~06:59 full briefing and 19:15 evening wrap via fleet-scheduler; backup crons 07:59/20:15; 3-hour dedupe guard window pairs each backup with its own edition.
+- **Schedule (IST):** 06:00 full briefing and 19:15 evening wrap via fleet-scheduler; backup crons 07:00/20:15; 3-hour dedupe guard window pairs each backup with its own edition.
 - **Inputs / data sources:** 45 verified RSS feeds (probed for reachability + freshness; rejects documented in code — data-vendor engineering blogs deliberately left to the eng-blogs agent), plus three structured APIs: HN Algolia (top stories + points/comments enrichment, one call for both), CISA Known Exploited Vulnerabilities JSON, GitHub-adjacent extras live elsewhere (rising repos moved to repo-review). The `TECH_WATCH` secret carries a personal watchlist. State: `seen.json`, `briefed.json`, `extras.json`.
 - **Pipeline:**
   1. `edition()` — morning (full caps, 24h lookback) or evening (tight caps, 14h); a quiet evening is silent unless a new exploited CVE fires.
@@ -129,7 +129,7 @@ multi-call. Times are IST.
 
 ### markets-brief
 - **Purpose:** Sends a daily one-line-per-instrument market snapshot (last close and day-over-day move) for Indian/US indices, USD/INR, gold and Bitcoin.
-- **Schedule (IST):** ~07:33 daily including weekends (`3 2 * * *` UTC), backup 08:33.
+- **Schedule (IST):** 06:00 daily including weekends (`30 0 * * *` UTC), backup 07:00.
 - **Inputs / data sources:** Yahoo Finance public chart endpoint (`/v8/finance/chart/<symbol>`, `interval=1d&range=5d`, no key, browser User-Agent) across `query1`/`query2` hosts. Symbols: Nifty 50 `^NSEI`, Sensex `^BSESN`, S&P 500 `^GSPC`, Nasdaq `^IXIC`, USD/INR `USDINR=X`, Gold `GC=F`, Bitcoin `BTC-USD`.
 - **Pipeline:**
   1. `quote(symbol)` GETs daily candles (falls through to the query2 mirror on host failure); takes the last two non-null closes for point + % change, and the timestamp paired with the final close for its real session date.
@@ -151,7 +151,7 @@ multi-call. Times are IST.
 
 ### release-radar
 - **Purpose:** Weekly Telegram digest of the last 7 days of GitHub releases across ten data/LLM-infra repos, condensed into "what this means for you" developer bullets.
-- **Schedule (IST):** Mondays ~07:37 IST (dispatched on the minute); GitHub cron `7 3 * * 1` UTC = Mon 08:37 IST is a guarded backup.
+- **Schedule (IST):** Mondays 06:00 IST (dispatched on the minute); GitHub cron `30 1 * * 1` UTC = Mon 07:00 IST is a guarded backup.
 - **Inputs / data sources:** GitHub REST API — `/repos/{repo}/releases` (paged, newest-first) and, as a fallback, `/repos/{repo}/tags` + each tag's commit endpoint for commit dates. Watch list is the hardcoded `REPOS` (qdrant, langchain, spark, anthropic-sdk-python, airflow, kafka, dbt-core, duckdb, polars, delta). Optional `GITHUB_TOKEN` only for higher rate limits.
 - **Pipeline:**
   1. Fetch releases per repo, paging (100/page, up to 5 pages) and stopping once a release predates the 7-day cutoff; skip drafts and pre-releases.
@@ -171,7 +171,7 @@ multi-call. Times are IST.
 
 ### study-coach
 - **Purpose:** Sends one LeetCode-style DSA practice problem to Telegram each morning, targeting the syllabus topic least represented in the user's recent practice.
-- **Schedule (IST):** Daily ~08:07 IST (`37 2 * * *` UTC); backup at 09:07 IST with a dedupe guard.
+- **Schedule (IST):** Daily 06:00 IST (`30 0 * * *` UTC); backup at 07:00 IST with a dedupe guard.
 - **Inputs / data sources:** GitHub API `/repos/astroboy1183/Data-Structures-and-Algorithms/commits` (latest 30 commit subjects, public, no token); local `state/served.json` history.
 - **Pipeline:**
   1. Fetch recent commit subjects (`recent_practice()`, `[]` on failure); load `served.json`.
@@ -193,7 +193,7 @@ multi-call. Times are IST.
 ### finance-tracker
 - **Purpose:** Reads bank/UPI/card transaction notification emails from Gmail and reports money movement (in/out/net, categories, alerts) to Telegram on daily/weekly/monthly cadences.
 - **Status:** ⚠️ Deployed but **blocked on Telegram bot creation** — `TELEGRAM_BOT_TOKEN`/`TELEGRAM_CHAT_ID` for `@jayanth_finance_bot` still need to be set via @BotFather before it can go live.
-- **Schedule (IST):** Daily ~08:31 IST (`1 3 * * *` UTC); backup 09:31 with dedupe guard. Extra sections trigger on Mondays (weekly), the 15th (budget pace, if `BUDGETS` set), and the 1st (monthly rollup).
+- **Schedule (IST):** Daily 06:00 IST (`30 0 * * *` UTC); backup 07:00 with dedupe guard. Extra sections trigger on Mondays (weekly), the 15th (budget pace, if `BUDGETS` set), and the 1st (monthly rollup).
 - **Inputs / data sources:** Gmail API (read-only OAuth via `token.json`/`credentials.json`, shared with mail-digest). Query built from optional `TXN_SENDERS` secret (sender fragments) or a broad `TXN_KEYWORDS` fallback. Config from env/secrets: `TXN_SENDERS`, `BUDGETS`, `LARGE_TXN_THRESHOLD`. Deterministic `MERCHANT_MAP` and `CATEGORIES` in code.
 - **Pipeline:**
   1. Authenticate Gmail; compute calendar-aligned IST windows (daily always; weekly on Mon; month-to-date on 15th; monthly + prior month on 1st).
@@ -214,7 +214,7 @@ multi-call. Times are IST.
 
 ### papers-digest
 - **Purpose:** Every Saturday morning, deliver one Telegram message with the week's 6-8 most relevant AI/data-engineering arXiv papers, each with a title, two-sentence takeaway, and link.
-- **Schedule (IST):** Saturday 09:07 IST — dispatched on the minute; guarded GitHub cron backup an hour later (`37 4 * * 6` UTC = 10:07 IST).
+- **Schedule (IST):** Saturday 06:00 IST — dispatched on the minute; guarded GitHub cron backup an hour later (`30 1 * * 6` UTC = 07:00 IST).
 - **Inputs / data sources:** arXiv Atom API (`export.arxiv.org/api/query`), categories `cs.LG`, `cs.CL`, `cs.AI`, `cs.DB`, over a 7-day lookback window.
 - **Pipeline:**
   1. **Fetch** — `fetch_recent()` paginates each category newest-first in pages of 100, stopping when an entry predates the 7-day cutoff or the feed empties, hard-capped at 12 pages (≤1200 entries/category), with a 3s pause between pages.
@@ -239,7 +239,7 @@ multi-call. Times are IST.
 
 ### eng-blogs
 - **Purpose:** Every evening, deliver one Telegram message summarizing new posts from 18 company engineering blogs for a data engineer, while archiving each post into a growing full-text corpus for a future RAG project.
-- **Schedule (IST):** Daily 19:07 IST (`37 13 * * *` UTC), with a dedupe-guarded backup cron at 20:07 IST.
+- **Schedule (IST):** Daily 06:00 IST (`30 0 * * *` UTC), with a dedupe-guarded backup cron at 07:00 IST.
 - **Inputs / data sources:** 18 RSS/Atom feeds in three categories — Data & Analytics (Databricks, Confluent, Snowflake, AWS Big Data, dbt, DuckDB), Systems & Scale (Netflix, Uber, Meta, Cloudflare, Discord, Slack, Stripe, Dropbox), Product & ML Eng (Spotify, Airbnb, Pinterest, Canva). Default 24h lookback; also reads the current month's corpus file for dedup.
 - **Pipeline:**
   1. **Fetch** — `gather_posts()` requests each feed over HTTP with a 20s timeout and a custom User-Agent (bare python-requests UA is rejected by some corporate feeds), then `feedparser.parse(resp.content)`.
@@ -261,7 +261,7 @@ multi-call. Times are IST.
 
 ### repo-review
 - **Purpose:** Every evening it reviews the last 24h of pushes across all of the owner's GitHub repos and delivers a tagged code review, a rotating deep-dive spotlight, and (weekly) portfolio advice to Telegram.
-- **Schedule (IST):** 19:37 primary, 20:37 backup (`7 14 * * *` UTC) with a dedupe guard.
+- **Schedule (IST):** 06:00 primary, 07:00 backup (`30 0 * * *` UTC) with a dedupe guard.
 - **Inputs / data sources:** GitHub REST API via `REPOS_READ_TOKEN` (read-only PAT) — `/user/repos` (owner, non-fork, non-archived), per-repo `/commits`, the compare/commit diff endpoints (raw `application/vnd.github.diff`), recursive git tree + raw file contents for the spotlight; `state/findings.json` for memory.
 - **Pipeline:**
   1. `my_repos()` lists owned, non-fork, non-archived repos.
@@ -287,7 +287,7 @@ multi-call. Times are IST.
 
 ### housekeeper
 - **Purpose:** Nightly health check of the owner's Linux Mint laptop that alerts (or sends an all-clear) to Telegram.
-- **Schedule (IST):** 21:30 nightly (`OnCalendar=*-*-* 21:30:00`, `Persistent=true`, `RandomizedDelaySec=120`).
+- **Schedule (IST):** 06:00 daily (`OnCalendar=*-*-* 06:00:00`, `Persistent=true`, `RandomizedDelaySec=120`).
 - **Execution:** Local **systemd** user timer on the laptop (not GitHub Actions).
 - **Inputs / data sources:** System probes only — `shutil.disk_usage` on `/` and `/home`; `systemctl --failed` (system + user); Obsidian vault git state at `~/Desktop/Jayanth-Vault`; `apt list --upgradable`; `journalctl -p 3 -b`; `/var/run/reboot-required`; battery sysfs under `/sys/class/power_supply/BAT*`. Anthropic API only when there are issues to summarize.
 - **Pipeline:**
@@ -310,7 +310,7 @@ multi-call. Times are IST.
 
 ### daily-review
 - **Purpose:** Nightly end-of-day digest of the owner's coding activity plus a fleet watchdog over all cloud agents, delivered to Telegram.
-- **Schedule (IST):** 22:15 nightly (`OnCalendar=*-*-* 22:15:00`, `Persistent=true`, `RandomizedDelaySec=60`), deliberately after the 21:30 housekeeper.
+- **Schedule (IST):** 22:15 nightly (`OnCalendar=*-*-* 22:15:00`, `Persistent=true`, `RandomizedDelaySec=60`) — the one agent kept at day's end, since it reviews the day.
 - **Execution:** Local **systemd** user timer on the laptop (not GitHub Actions).
 - **Inputs / data sources:** Local git repos under `~/Desktop` and `~/agents` (`REVIEW_ROOTS`-overridable) via `git log/status/rev-list`; GitHub Actions run history via authenticated `gh api` for each rostered cloud agent; `systemctl --user show` for the housekeeper service; byte-comparison of every `~/agents/*/agentlib.py` against `common/agentlib.py`. Anthropic API for the writeup.
 - **Pipeline:**

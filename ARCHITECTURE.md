@@ -103,9 +103,9 @@ failed services, today's commits), so they run **on the machine** via a
 Actions. Steps 3–5 (fetch → Claude → Telegram) are the same.
 
 ```ini
-# housekeeper.timer — runs nightly at 21:30 IST, catches up if the laptop was off
+# housekeeper.timer — runs daily at 06:00 IST, catches up if the laptop was off
 [Timer]
-OnCalendar=*-*-* 21:30:00
+OnCalendar=*-*-* 06:00:00
 Persistent=true          # missed run (asleep/off) fires once at next boot
 RandomizedDelaySec=120
 ```
@@ -131,13 +131,14 @@ Cloudflare's per-Worker trigger limit), it keeps an every-minute heartbeat
 and does the matching in code:
 
 - Compute the current UTC `hh:mm`.
-- Filter a `SCHEDULE` table (13 tick-times) for entries due now — respecting
+- Filter a `SCHEDULE` table for entries due now — respecting
   weekday for weekly agents (`release-radar` Mon, `papers-digest` Sat).
 - For each match, `POST` to GitHub's
   `…/actions/workflows/<agent>.yml/dispatches` with
   `inputs.source = "scheduler"` (so the workflow's guard can tell a scheduler
   dispatch apart from a human clicking "Run workflow").
-- **13 minutes a day** dispatch something; the other **~1,427 ticks** match
+- **6 minutes a day** dispatch something (00:30 UTC carries the whole
+  06:00 IST fleet in one tick); the other **~1,434 ticks** match
   nothing and the Worker exits in milliseconds.
 
 **Why it exists:** GitHub's own cron is best-effort — minutes-to-hours late
@@ -329,18 +330,18 @@ Times are IST. "Brain" = whether the agent calls Claude.
 | Agent | When | Brain | What it delivers |
 |---|---|---|---|
 | weather-report | 06:00 | ⚙️ deterministic | 24-city forecast + AQI, severe-weather watch |
-| mail-digest | 06:07 &amp; 19:00 sweep | 🧠 1× | Gmail → VIP / NEEDS ACTION / CARRIED / deadline ledger, deep links |
+| mail-digest | 06:00 &amp; 19:00 sweep | 🧠 1× | Gmail → VIP / NEEDS ACTION / CARRIED / deadline ledger, deep links |
 | news-briefing | 06:00 &amp; 21:00 wrap | 🧠 2× | 7 sections (incl. 🏛 India + 🗽 US politics/immigration) from 41 sources, article-grounded, 👁 watchlist |
-| cricket-scores | 06:17, 13:37 &amp; 21:47 | 🧠 1× | notable matches only — silent otherwise; Sun stats |
-| tech-news | 06:59 &amp; 19:15 wrap | 🧠 2× | flagship: 9 sections from 45 sources, core topics (AI/data/infra/OS/hardware) up to 10 stories deep with ↳ background-context lines + deterministic HN TOP / CISA KEV patch-now, 👁 watchlist |
-| markets-brief | 07:33 | ⚙️ deterministic | Nifty · Sensex · S&amp;P · Nasdaq · USD/INR · gold · BTC |
-| release-radar | Mon 07:37 | 🧠 1× | weekly releases across my dependency stack |
-| study-coach | 08:07 | 🧠 1× | one DSA problem/day, aimed at weak topics |
-| finance-tracker | 08:31 | 🧠 1× | income/expense from bank alerts |
-| papers-digest | Sat 09:07 | 🧠 2× | weekly arXiv, two-stage review of ~1500 papers |
-| eng-blogs | 19:07 | 🧠 1× | 18 engineering blogs + growing corpus |
-| repo-review | 19:37 | 🧠 2× | reviews every diff I push, remembers findings; 📈 rising repos |
-| housekeeper | 21:30 *(local)* | 🧠 1× | laptop health: disk, failed units, battery |
+| cricket-scores | 06:00, 13:37 &amp; 21:47 | 🧠 1× | notable matches only — silent otherwise; Sun stats |
+| tech-news | 06:00 &amp; 19:15 wrap | 🧠 2× | flagship: 9 sections from 45 sources, core topics (AI/data/infra/OS/hardware) up to 10 stories deep with ↳ background-context lines + deterministic HN TOP / CISA KEV patch-now, 👁 watchlist |
+| markets-brief | 06:00 | ⚙️ deterministic | Nifty · Sensex · S&amp;P · Nasdaq · USD/INR · gold · BTC |
+| release-radar | Mon 06:00 | 🧠 1× | weekly releases across my dependency stack |
+| study-coach | 06:00 | 🧠 1× | one DSA problem/day, aimed at weak topics |
+| finance-tracker | 06:00 | 🧠 1× | income/expense from bank alerts |
+| papers-digest | Sat 06:00 | 🧠 2× | weekly arXiv, two-stage review of ~1500 papers |
+| eng-blogs | 06:00 | 🧠 1× | 18 engineering blogs + growing corpus |
+| repo-review | 06:00 | 🧠 2× | reviews every diff I push, remembers findings; 📈 rising repos |
+| housekeeper | 06:00 *(local)* | 🧠 1× | laptop health: disk, failed units, battery |
 | daily-review | 22:15 *(local)* | 🧠 1× | day review + fleet watchdog |
 
 Plus infrastructure: **`fleet-scheduler`** (the clock), **`common`** (the
