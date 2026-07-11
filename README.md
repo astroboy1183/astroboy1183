@@ -31,8 +31,8 @@ What I like working on: pipelines that move serious data (Spark, Kafka,
 Databricks, medallion architectures), and **LLM systems with real
 engineering discipline** — deterministic where possible, model calls only
 where judgment helps, everything tested and observable. To practice
-what I preach, I built a fleet of 11 autonomous agents that
-runs my mornings — more below.
+what I preach, I built a fleet of autonomous agents that runs my
+mornings — more below.
 
 **Certifications:** Databricks Certified Associate Data Engineer (2025) ·
 Microsoft Certified Administrator Associate (2025) ·
@@ -49,9 +49,9 @@ AWS Certified Cloud Practitioner (2023)
 agents, no hands involved.*
 
 <!--NOW-START-->
-⚙️ **189 commits** across 12 repos this week
+⚙️ **219 commits** across 14 repos this week
 
-🚢 last shipped: *"Merge pull request #2 from astroboy1183/resume-update-202607"* in `astroboy1183`
+🚢 last shipped: *"Watchdog watches only the active agents (fleet paused for cr"* in `housekeeper`
 
 🤖 agent fleet: **8/8 green** yesterday
 
@@ -91,14 +91,16 @@ Full resume on [my site](https://jayanthappalla.com) · full history on [LinkedI
 
 ## 🤖 The agent fleet (the side project that runs my life)
 
-11 autonomous agents — each its own repo, schedule, Telegram
-bot and memory — deliver my mornings at 06:00 IST sharp: weather, mail
-triage, 7-section news, a 9-section tech briefing, my own money
+Twelve autonomous agents — each its own repo, schedule, Telegram bot
+and memory — built to deliver my mornings at 06:00 IST sharp: weather,
+mail triage, 7-section news, a 9-section tech briefing, my own money
 movement, a code review of everything I pushed yesterday, a top-10
 reading list. Zero servers: a Cloudflare Worker dispatches GitHub
-Actions at exact minutes (~6s, after GitHub's own cron once ran 4 hours
-late), state is committed back after every run, and a watchdog notices
-any agent that silently dies.
+Actions at exact minutes (~6s, after GitHub's own cron once ran 4
+hours late), state is committed back after every run, and a watchdog
+notices any agent that silently dies. The fleet scales with my needs —
+11 agents are dispatched daily right now, the rest pause
+and resume with a one-line scheduler change.
 
 **The engineering story → [ARCHITECTURE.md](ARCHITECTURE.md)** ·
 **every agent in detail → [AGENTS.md](AGENTS.md)**
