@@ -332,7 +332,7 @@ Times are IST. "Brain" = whether the agent calls Claude.
 | mail-digest | 06:07 &amp; 19:00 sweep | 🧠 1× | Gmail → VIP / NEEDS ACTION / CARRIED / deadline ledger, deep links |
 | news-briefing | 06:00 &amp; 21:00 wrap | 🧠 2× | 7 sections (incl. 🏛 India + 🗽 US politics/immigration) from 41 sources, article-grounded, 👁 watchlist |
 | cricket-scores | 06:17, 13:37 &amp; 21:47 | 🧠 1× | notable matches only — silent otherwise; Sun stats |
-| tech-news | 06:59 &amp; 19:15 wrap | 🧠 2× | flagship: 7 sections from 29 sources + deterministic HN TOP / CISA KEV patch-now / rising repos, 👁 watchlist |
+| tech-news | 06:59 &amp; 19:15 wrap | 🧠 2× | flagship: 9 sections (AI, data, infra, OS…) from 45 sources with ↳ background-context lines + deterministic HN TOP / CISA KEV patch-now / rising repos, 👁 watchlist |
 | markets-brief | 07:33 | ⚙️ deterministic | Nifty · Sensex · S&amp;P · Nasdaq · USD/INR · gold · BTC |
 | release-radar | Mon 07:37 | 🧠 1× | weekly releases across my dependency stack |
 | study-coach | 08:07 | 🧠 1× | one DSA problem/day, aimed at weak topics |

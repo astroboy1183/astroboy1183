@@ -104,9 +104,9 @@ multi-call. Times are IST.
 - **Key dependencies:** `feedparser`, `anthropic`, `requests`, `python-dotenv`.
 
 ### tech-news
-- **Purpose:** The fleet's flagship — two Telegram editions a day covering the full tech landscape in seven sections (AI with primary sources, data & infra, software & dev, hardware, industry, India tech, security) plus four deterministic blocks: HN TOP (the community's actual front page), RISING REPOS (new GitHub repos gaining stars), PATCH NOW (CISA's actively-exploited CVE catalog) and a Saturday WEEK IN TECH.
+- **Purpose:** The fleet's flagship — two Telegram editions a day covering the full tech landscape in nine sections (AI with primary sources, data engineering/science/analytics, cloud & infra, operating systems (Windows/Linux/macOS), software & dev, hardware, industry, India tech, security), every bullet carrying a '↳' background-context line plus four deterministic blocks: HN TOP (the community's actual front page), RISING REPOS (new GitHub repos gaining stars), PATCH NOW (CISA's actively-exploited CVE catalog) and a Saturday WEEK IN TECH.
 - **Schedule (IST):** ~06:59 full briefing and 19:15 evening wrap via fleet-scheduler; backup crons 07:59/20:15; 3-hour dedupe guard window pairs each backup with its own edition.
-- **Inputs / data sources:** 29 verified RSS feeds (probed for reachability + freshness; rejects documented in code — data-vendor engineering blogs deliberately left to the eng-blogs agent), plus three structured APIs: HN Algolia (top stories + points/comments enrichment, one call for both), CISA Known Exploited Vulnerabilities JSON, GitHub repo search (workflow's own token). The `TECH_WATCH` secret carries a personal watchlist. State: `seen.json`, `briefed.json`, `extras.json`.
+- **Inputs / data sources:** 45 verified RSS feeds (probed for reachability + freshness; rejects documented in code — data-vendor engineering blogs deliberately left to the eng-blogs agent), plus three structured APIs: HN Algolia (top stories + points/comments enrichment, one call for both), CISA Known Exploited Vulnerabilities JSON, GitHub repo search (workflow's own token). The `TECH_WATCH` secret carries a personal watchlist. State: `seen.json`, `briefed.json`, `extras.json`.
 - **Pipeline:**
   1. `edition()` — morning (full caps, 24h lookback) or evening (tight caps, 14h); a quiet evening is silent unless a new exploited CVE fires.
   2. `hn_window()` — one Algolia call: 🔥 HN TOP (top-5 by points, 100-point floor) + a title→(points, comments) map enriching HN entries in the dev section.
@@ -119,7 +119,7 @@ multi-call. Times are IST.
   9. Photo front page (Top story og:image via `sendPhoto`, best-effort), `send_telegram`, then state saves.
 - **LLM role:** 🧠 2 Claude calls (3 on Saturdays) — select + write; HN TOP, PATCH NOW, RISING REPOS and the watchlist guarantee are fully deterministic.
 - **State / memory:** `seen.json` (3d — briefed once, evening wrap new-only by construction), `briefed.json` (7d — developments framed as developments, Saturday arcs), `extras.json` (KEV CVEs 90d + shown repos 60d, so tripwires never repeat).
-- **Output format:** Header (edition + candidate/feed counts), photo front page, 🗞 Top line, seven emoji sections (👁-prefixed watchlist bullets, validated links), then 🔥 HN TOP / 📈 RISING REPOS / 🚨 PATCH NOW / 🗓 WEEK IN TECH as they apply.
+- **Output format:** Header (edition + candidate/feed counts), photo front page, 🗞 Top line, nine emoji sections (each bullet: facts + ↳ context + link) (👁-prefixed watchlist bullets, validated links), then 🔥 HN TOP / 📈 RISING REPOS / 🚨 PATCH NOW / 🗓 WEEK IN TECH as they apply.
 - **Notable design decisions:**
   - Security accuracy is non-negotiable: PATCH NOW is code-built from CISA's official catalog — no model touches it, and it alone can break evening silence.
   - Two-stage article-grounded writing (the news-briefing engine) with per-edition caps.
