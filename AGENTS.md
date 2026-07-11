@@ -104,23 +104,27 @@ multi-call. Times are IST.
 - **Key dependencies:** `feedparser`, `anthropic`, `requests`, `python-dotenv`.
 
 ### tech-news
-- **Purpose:** Compiles the last 24h of tech-news feeds across five categories into one sectioned Telegram briefing (what happened, why it matters, link).
-- **Schedule (IST):** ~06:59 daily (`29 1 * * *` UTC), backup 07:59.
-- **Inputs / data sources:** RSS feeds by category — AI (TechCrunch AI, VentureBeat AI), Software & Dev (Hacker News RSS, Ars Technica), Hardware (Tom's Hardware, The Verge), Industry (TechCrunch venture), Security (The Hacker News, BleepingComputer); 12 entries/feed. HN entries enriched via the Algolia API (`hn.algolia.com/api/v1/search`) for points/comments. Reads `state/seen.json`.
+- **Purpose:** The fleet's flagship — two Telegram editions a day covering the full tech landscape in seven sections (AI with primary sources, data & infra, software & dev, hardware, industry, India tech, security) plus four deterministic blocks: HN TOP (the community's actual front page), RISING REPOS (new GitHub repos gaining stars), PATCH NOW (CISA's actively-exploited CVE catalog) and a Saturday WEEK IN TECH.
+- **Schedule (IST):** ~06:59 full briefing and 19:15 evening wrap via fleet-scheduler; backup crons 07:59/20:15; 3-hour dedupe guard window pairs each backup with its own edition.
+- **Inputs / data sources:** 29 verified RSS feeds (probed for reachability + freshness; rejects documented in code — data-vendor engineering blogs deliberately left to the eng-blogs agent), plus three structured APIs: HN Algolia (top stories + points/comments enrichment, one call for both), CISA Known Exploited Vulnerabilities JSON, GitHub repo search (workflow's own token). The `TECH_WATCH` secret carries a personal watchlist. State: `seen.json`, `briefed.json`, `extras.json`.
 - **Pipeline:**
-  1. `load_seen()` reads `state/seen.json`, pruning links older than 3 days.
-  2. `gather_stories(seen)` pulls fresh (<24h) entries per feed (undated kept), skipping seen links and dead feeds; `clean()` strips HTML; `enrich_hn()` attaches points/comments on exact-title match.
-  3. `summarize(stories)` makes **1 Claude call** (`max_tokens=4000`): fixed 5-section structure, 3–5 ranked stories each, cross-feed dedupe, "quiet day" for empty sections. Skipped entirely if 0 stories scanned.
-  4. `validate_links()` replaces any output URL not in the fetched set with `(link unavailable)`.
-  5. `main()` sends with a scanned-count header, then writes `save_seen()` after the send.
-- **LLM role:** 🧠 1 Claude call — the model writes the whole briefing: ranks/selects stories per section, dedupes cross-feed coverage, and judges HN significance by score.
-- **State / memory:** `state/seen.json` — `{link: 'YYYY-MM-DD'}` of every candidate shown to the model, kept 3 days and filtered on re-entry so a lingering story is briefed exactly once; committed back by the workflow after the send.
-- **Output format:** `🗞 Tech briefing — <date> (last 24h, N fresh stories scanned)` header, then five emoji-labelled sections (🤖 AI / 💻 SOFTWARE & DEV / 🔩 HARDWARE / 🏢 INDUSTRY / 🔐 SECURITY), each story = headline + 1–2 sentences + link on its own line; empty section says "quiet day". Never silent — all-feeds-dead sends a one-liner without an LLM call.
+  1. `edition()` — morning (full caps, 24h lookback) or evening (tight caps, 14h); a quiet evening is silent unless a new exploited CVE fires.
+  2. `hn_window()` — one Algolia call: 🔥 HN TOP (top-5 by points, 100-point floor) + a title→(points, comments) map enriching HN entries in the dev section.
+  3. `gather_stories()` — fresh, unseen, per-feed try/except; watchlist matches 👁-flagged.
+  4. `kev_block()` — deterministic: KEV entries added in the last 7 days not yet surfaced, capped 5, with NVD links + patch-due dates; runs in BOTH editions.
+  5. `select_stories()` — **Claude call 1** (haiku) picks per-category indices under editorial rules; skipped 👁 stories forced back in by code.
+  6. `fetch_article()` + `write_briefing()` — **Claude call 2** (sonnet) writes bullets from real article text (version numbers, benchmarks, consequences) with a `===STATE===` tail (story keys + top link).
+  7. `validate_links()`, then deterministic blocks appended (their URLs are code-fetched); `rising_repos()` morning-only, never repeats a repo.
+  8. Saturday: `week_in_review()` — **Claude call 3** traces the week's arcs from the briefed memory.
+  9. Photo front page (Top story og:image via `sendPhoto`, best-effort), `send_telegram`, then state saves.
+- **LLM role:** 🧠 2 Claude calls (3 on Saturdays) — select + write; HN TOP, PATCH NOW, RISING REPOS and the watchlist guarantee are fully deterministic.
+- **State / memory:** `seen.json` (3d — briefed once, evening wrap new-only by construction), `briefed.json` (7d — developments framed as developments, Saturday arcs), `extras.json` (KEV CVEs 90d + shown repos 60d, so tripwires never repeat).
+- **Output format:** Header (edition + candidate/feed counts), photo front page, 🗞 Top line, seven emoji sections (👁-prefixed watchlist bullets, validated links), then 🔥 HN TOP / 📈 RISING REPOS / 🚨 PATCH NOW / 🗓 WEEK IN TECH as they apply.
 - **Notable design decisions:**
-  - Hallucinated-URL guard: only fetched links survive validation, so an invented URL never reaches Telegram (covered by offline tests).
-  - HN significance measured, not guessed — Algolia points/comments feed the model, failures leave the entry unenriched.
-  - Undated entries are kept (feeds are erratic about dates) rather than dropped.
-  - State saved after the send so a state failure never costs the briefing.
+  - Security accuracy is non-negotiable: PATCH NOW is code-built from CISA's official catalog — no model touches it, and it alone can break evening silence.
+  - Two-stage article-grounded writing (the news-briefing engine) with per-edition caps.
+  - HN significance measured (Algolia points), and the HN TOP block is verbatim — the model neither picks nor rewrites it.
+  - Watchlist inclusion is code-enforced (mail-digest VIP pattern).
 - **Key dependencies:** `feedparser`, `requests`, `anthropic`, `python-dotenv`.
 
 ### markets-brief
