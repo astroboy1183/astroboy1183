@@ -127,27 +127,6 @@ multi-call. Times are IST.
   - Watchlist inclusion is code-enforced (mail-digest VIP pattern).
 - **Key dependencies:** `feedparser`, `requests`, `anthropic`, `python-dotenv`.
 
-### study-coach
-- **Purpose:** Sends one LeetCode-style DSA practice problem to Telegram each morning, targeting the syllabus topic least represented in the user's recent practice.
-- **Schedule (IST):** Daily 06:00 IST (`30 0 * * *` UTC); backup at 07:00 IST with a dedupe guard.
-- **Inputs / data sources:** GitHub API `/repos/astroboy1183/Data-Structures-and-Algorithms/commits` (latest 30 commit subjects, public, no token); local `state/served.json` history.
-- **Pipeline:**
-  1. Fetch recent commit subjects (`recent_practice()`, `[]` on failure); load `served.json`.
-  2. Deterministically pick the topic: `classify()` maps each commit subject to one syllabus topic via `TOPIC_KEYWORDS`; `least_covered_topic()` targets the fewest-covered topic (day-of-year fallback when no signal), excluding yesterday's served topic so it never repeats two days running.
-  3. Pick difficulty by day-of-year (`tm_yday % 3` → easy/medium/hard).
-  4. **1 Claude call** (`max_tokens=1200`) to write exactly one problem at that difficulty/topic in a fixed shape (TOPIC / statement / 2 examples / constraints / fold line / HINT 1 / HINT 2 / APPROACH).
-  5. Validate the model's echoed `TOPIC:` against the syllabus (`resolve_topic`) and force the header (`set_topic_header`) so it always names a real topic.
-  6. Send; on Sundays append a deterministic "WEEK IN REVIEW". Record the served entry to `served.json` **after** the send.
-- **LLM role:** 🧠 1 Claude call — writes the problem text only; topic and difficulty selection are decided in Python, and the model's topic label is overridden if it drifts off-syllabus.
-- **State / memory:** `state/served.json` — list of `{date, topic, difficulty}`, last 60 kept; used for the never-repeat exclusion and Sunday's follow-through recap. Committed back by the workflow.
-- **Output format:** Header `🧠 Study coach — <day date>`, then the problem with hints/approach below a "--- try it before reading on ---" spoiler line; Sundays append "— WEEK IN REVIEW —" cross-checking served topics against commits (✓ practiced / not seen, "Followed through on N/M"). Always sends daily (never silent).
-- **Notable design decisions:**
-  - Weakness targeting and rotation are guaranteed in Python, not on model behavior; day-of-year fallback keeps rotating even when the API fails or nothing classifies.
-  - Hints below the fold keep it to one self-contained message a day (the scroll is the spoiler wall) instead of a separate answer message.
-  - State saved only after the send, so a state-write failure never costs the problem.
-  - First-matching-topic-in-syllabus-order rule ensures each commit counts toward exactly one topic.
-- **Key dependencies:** `requests`, `python-dotenv`, `anthropic`.
-
 ### finance-tracker
 - **Purpose:** Reads bank/UPI/card transaction notification emails from Gmail and reports money movement (in/out/net, categories, alerts) to Telegram on daily/weekly/monthly cadences.
 - **Status:** ⚠️ Deployed but **blocked on Telegram bot creation** — `TELEGRAM_BOT_TOKEN`/`TELEGRAM_CHAT_ID` for `@jayanth_finance_bot` still need to be set via @BotFather before it can go live.

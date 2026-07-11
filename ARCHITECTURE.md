@@ -298,7 +298,6 @@ committed back into their own repo by the workflow **after** the send:
 |---|---|---|
 | `repo-review` | `state/` | prior review findings, to follow through |
 | `news-briefing`, `tech-news` | `state/seen.json` (+ news' `briefed.json`, 7d) | links already surfaced, to dedupe across days; what the bullets said, for continuity + Sunday arcs |
-| `study-coach` | `state/served.json` | problems/topics already served |
 | `mail-digest` | `state/noise.json` | learned noise/unsubscribe trends |
 | `eng-blogs` | `data/` | a growing full-text corpus (future RAG) |
 
@@ -333,7 +332,6 @@ Times are IST. "Brain" = whether the agent calls Claude.
 | news-briefing | 06:00 &amp; 21:00 wrap | 🧠 2× | 7 sections (incl. 🏛 India + 🗽 US politics/immigration) from 41 sources, article-grounded, 👁 watchlist |
 | cricket-scores | 06:00, 13:37 &amp; 21:47 | 🧠 1× | notable matches only — silent otherwise; Sun stats |
 | tech-news | 06:00 &amp; 19:15 wrap | 🧠 2× | flagship: 9 sections from 45 sources, core topics (AI/data/infra/OS/hardware) up to 10 stories deep with ↳ background-context lines + deterministic HN TOP / CISA KEV patch-now, 👁 watchlist |
-| study-coach | 06:00 | 🧠 1× | one DSA problem/day, aimed at weak topics |
 | finance-tracker | 06:00 | 🧠 1× | income/expense from bank alerts |
 | papers-digest | Sat 06:00 | 🧠 2× | weekly arXiv, two-stage review of ~1500 papers |
 | eng-blogs | 06:00 | 🧠 1× | 18 engineering blogs + growing corpus |
