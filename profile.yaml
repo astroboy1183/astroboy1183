@@ -76,5 +76,4 @@ learning: >-
 # Agents that don't appear in the fleet-scheduler SCHEDULE (the count is
 # derived: unique scheduled repos + these).
 unscheduled_agents:
-  - housekeeper   # local systemd
-  - repo-audit    # on-demand button-press
+  - repo-audit    # on-demand button-press (housekeeper paused with the fleet)

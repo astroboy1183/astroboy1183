@@ -68,7 +68,9 @@ def fleet_count(profile):
     src = gh([SCHEDULER_RAW, "-H", "Accept: application/vnd.github.raw"], raw=True)
     extras = profile.get("unscheduled_agents", [])
     if src:
-        repos = set(re.findall(r'repo:\s*"([^"]+)"', src))
+        live = "\n".join(l for l in src.splitlines()
+                         if not l.lstrip().startswith("//"))
+        repos = set(re.findall(r'repo:\s*"([^"]+)"', live))
         if repos:
             return len(repos) + len(extras)
     return len(FLEET_WATCH) + 1 + len(extras)  # +1: papers (weekly) not in watch list

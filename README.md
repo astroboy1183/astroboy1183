@@ -49,9 +49,9 @@ AWS Certified Cloud Practitioner (2023)
 agents, no hands involved.*
 
 <!--NOW-START-->
-⚙️ **196 commits** across 12 repos this week
+⚙️ **220 commits** across 14 repos this week
 
-🚢 last shipped: *"Fleet blurb reflects on-demand scaling; count stays derived"* in `astroboy1183`
+🚢 last shipped: *"Tests track the paused-fleet watchdog list"* in `housekeeper`
 
 🤖 agent fleet: **8/8 green** yesterday
 
@@ -99,7 +99,7 @@ reading list. Zero servers: a Cloudflare Worker dispatches GitHub
 Actions at exact minutes (~6s, after GitHub's own cron once ran 4
 hours late), state is committed back after every run, and a watchdog
 notices any agent that silently dies. The fleet scales with my needs —
-11 agents are dispatched daily right now, the rest pause
+3 agents are dispatched daily right now, the rest pause
 and resume with a one-line scheduler change.
 
 **The engineering story → [ARCHITECTURE.md](ARCHITECTURE.md)** ·

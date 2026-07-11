@@ -76,6 +76,12 @@ class FleetCountTest(unittest.TestCase):
         with mock.patch.object(br, "gh", fake_gh({"fleet-scheduler": src})):
             self.assertEqual(br.fleet_count(PROFILE), 3 + 2)  # unique + extras
 
+    def test_paused_commented_entries_do_not_count(self):
+        src = ('  { utc: "00:30", repo: "a" },\n'
+               '  // PAUSED: { utc: "00:30", repo: "b" },\n')
+        with mock.patch.object(br, "gh", fake_gh({"fleet-scheduler": src})):
+            self.assertEqual(br.fleet_count(PROFILE), 1 + 2)
+
     def test_unreachable_scheduler_falls_back_never_zero(self):
         with mock.patch.object(br, "gh", fake_gh({})):
             self.assertGreater(br.fleet_count(PROFILE), 0)
