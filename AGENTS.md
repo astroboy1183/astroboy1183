@@ -176,9 +176,9 @@ multi-call. Times are IST.
 ## 🌆 Evening cloud agents
 
 ### eng-blogs
-- **Purpose:** My daily engineering reading list — the 10 best unread posts across 33 verified blogs (companies + the individuals every good engineer reads), ranked against my interests, each with a specific blurb, a deterministic read-time and its link. A post is served exactly once, ever.
+- **Purpose:** My daily engineering reading list — the 10 best unread posts across 38 verified blogs (companies + the individuals every good engineer reads), ranked against my interests, each with a specific blurb, a deterministic read-time and its link. A post is served exactly once, ever.
 - **Schedule (IST):** Daily 06:00 (`30 0 * * *` UTC), backup 07:00 with dedupe guard.
-- **Inputs / data sources:** 33 probed RSS feeds, the posts' own pages (blurbs + read-times from real text), the `BLOG_INTERESTS` secret, `state/served.json`.
+- **Inputs / data sources:** 38 probed RSS feeds, the posts' own pages (blurbs + read-times from real text), the `BLOG_INTERESTS` secret, `state/served.json`.
 - **Pipeline:** gather the unserved POOL (newest first, feed-rot surfaced) → widen the candidate window (14→45→120→730d) until ≥30 candidates → **Claude call 1** (haiku) ranks vs interests (max 2/source, 1-2 wildcards, timeless-over-thin) with a deterministic top-up to exactly 10 → fetch each pick's full text → **Claude call 2** (sonnet) writes 2-3 specific sentences per pick (marker format, abstract fallback) → code composes the numbered message (headers, read-times at 230 wpm, links — the model never emits a URL) → send → record served links. Posts <48h old are archived to the `data/` JSONL corpus for the RAG project.
 - **LLM role:** 🧠 2 calls — rank + annotate; pool mechanics, diversity cap, top-up, read-times, links and composition are deterministic.
 - **State / memory:** `state/served.json` (800-day window — never re-serve) and `data/posts-YYYY-MM.jsonl` (full-text corpus), committed back by the workflow.
