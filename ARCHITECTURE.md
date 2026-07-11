@@ -95,9 +95,9 @@ flowchart TD
     G --> H["runner destroyed"]
 ```
 
-### Plane B — Local agents (2)
+### Plane B — Local agents (1)
 
-`housekeeper` and `daily-review` inspect the laptop itself (disk, battery,
+`housekeeper` inspects the laptop itself (disk, battery,
 failed services, today's commits), so they run **on the machine** via a
 **systemd timer** — Linux's built-in scheduler. No Cloudflare, no GitHub
 Actions. Steps 3–5 (fetch → Claude → Telegram) are the same.
@@ -281,7 +281,7 @@ Delivery is defended in depth:
   It **fails open** — if the check itself breaks, the message still goes.
 - **Fail-loud alerts:** any run that dies pings Telegram immediately, with a
   link to the failing log — from the agent's own bot.
-- **Watchdog:** `daily-review` (22:15) sweeps the day and flags any agent that
+- **Watchdog:** `housekeeper` (06:00, local) checks every cloud agent actually RAN yesterday and flags any that
   should have delivered but didn't — a backstop above the per-run alerts.
 - **State saved after send:** memory is committed only once delivery
   succeeded, so a `git push` failure never costs a message.
@@ -337,7 +337,6 @@ Times are IST. "Brain" = whether the agent calls Claude.
 | eng-blogs | 06:00 | 🧠 2× | daily top-10 reading list from 38 blogs, interest-ranked, never repeats + growing RAG corpus |
 | repo-review | 06:00 | 🧠 2× | reviews every diff I push, remembers findings; 📈 rising repos |
 | housekeeper | 06:00 *(local)* | 🧠 1× | laptop health: disk, units, memory/load, temps, kernel storage errors, 🧹 cleanup ledger, repo drift, trends |
-| daily-review | 22:15 *(local)* | 🧠 1× | day review + fleet watchdog |
 | repo-audit | on-demand *(button)* | 🧠 1×/repo | X-ray of all ~67 repos → committed dashboard + report.json (own UI site later) |
 
 Plus infrastructure: **`fleet-scheduler`** (the clock), **`common`** (the

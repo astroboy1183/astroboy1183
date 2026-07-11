@@ -213,7 +213,7 @@ multi-call. Times are IST.
 - **Key dependencies:** `requests`, `anthropic`, `python-dotenv`.
 
 ### housekeeper
-- **Purpose:** Daily root-free laptop health check: disk usage, failed units, the fleet's own local timers, memory pressure/load, CPU temperature, kernel storage errors (the SMART substitute), Obsidian-vault git drift, repo drift across ~/agents + ~/Desktop, security updates, a 🧹 cleanup ledger (cache/trash/journald/autoremove), battery wear, and history-powered trends (disk growth; reboot-required escalates after 7 ignored days). Always sends — ✅ one-liner when healthy, ⚠️ summarized action list when not.
+- **Purpose:** Daily root-free laptop health check: disk usage, failed units, the fleet's own local timers, memory pressure/load, CPU temperature, kernel storage errors (the SMART substitute), Obsidian-vault git drift, repo drift across ~/agents + ~/Desktop, security updates, a 🧹 cleanup ledger (cache/trash/journald/autoremove), battery wear, history-powered trends (disk growth; reboot-required escalates after 7 ignored days), the 🐕 fleet watchdog (every cloud agent must show a successful run YESTERDAY — adopted from the retired daily-review agent) and vendored-agentlib drift. Always sends — ✅ one-liner when healthy, ⚠️ summarized action list when not.
 - **Schedule (IST):** 06:00 daily (`OnCalendar=*-*-* 06:00:00`, `Persistent=true`, `RandomizedDelaySec=120`).
 - **Execution:** Local **systemd** user timer on the laptop (not GitHub Actions).
 - **Inputs / data sources:** System probes only — `shutil.disk_usage` on `/` and `/home`; `systemctl --failed` (system + user); Obsidian vault git state at `~/Desktop/Jayanth-Vault`; `apt list --upgradable`; `journalctl -p 3 -b`; `/var/run/reboot-required`; battery sysfs under `/sys/class/power_supply/BAT*`. Anthropic API only when there are issues to summarize.
@@ -235,30 +235,3 @@ multi-call. Times are IST.
   - `Persistent=true` catches up missed runs on next wake; `Restart=on-failure` handles boot-time network races.
 - **Key dependencies:** `requests~=2.34`, `python-dotenv~=1.2` (imports shared `agentlib.py` from `~/agents/common/` via `sys.path`, not vendored).
 
-### daily-review
-- **Purpose:** Nightly end-of-day digest of the owner's coding activity plus a fleet watchdog over all cloud agents, delivered to Telegram.
-- **Schedule (IST):** 22:15 nightly (`OnCalendar=*-*-* 22:15:00`, `Persistent=true`, `RandomizedDelaySec=60`) — the one agent kept at day's end, since it reviews the day.
-- **Execution:** Local **systemd** user timer on the laptop (not GitHub Actions).
-- **Inputs / data sources:** Local git repos under `~/Desktop` and `~/agents` (`REVIEW_ROOTS`-overridable) via `git log/status/rev-list`; GitHub Actions run history via authenticated `gh api` for each rostered cloud agent; `systemctl --user show` for the housekeeper service; byte-comparison of every `~/agents/*/agentlib.py` against `common/agentlib.py`. Anthropic API for the writeup.
-- **Pipeline:**
-  1. `find_repos()` + `repo_report()` — today's commit subjects per repo, backward-walked streak, dirty/unpushed state.
-  2. `cloud_agent_status()` for each of ~10 daily agents (+ weekly agents on their weekday) — queries today's workflow runs and classifies ran-ok / fired-but-no-success / not-due-yet / DID NOT FIRE, with a `CRON_GRACE_MIN=105` window.
-  3. `housekeeper_status()` — did the local housekeeper run and exit 0 today.
-  4. `agentlib_drift()` — flags any vendored agentlib copy diverging from `common/`.
-  5. Sundays: `week_report()` — per-repo commit counts over 7 days.
-  6. Assemble the findings block → **one Claude call** → `send_telegram()`; findings also printed to journald.
-- **LLM role:** 🧠 1 Claude call (default `claude-haiku-4-5`, `max_tokens` 800 Sunday / 600 otherwise). The model composes the 8–14 line review: infers the day's theme from commit subjects, notes streaks, gives a gentle uncommitted/unpushed reminder, collapses the fleet to "✓ all agents ran" unless there's a problem, adds a Sunday WEEK IN REVIEW, and ends with exactly one suggestion for tomorrow. All data gathering is deterministic.
-- **State / memory:** none (relies on live git history and GitHub run history).
-- **Output format:** `🌙 Daily review — <day date>` + the model's plain-text review (built from a fixed findings block: TODAY'S WORK, AGENT FLEET, and Sunday's THIS WEEK). Always sends — it's a review, not an alarm.
-- **Notable design decisions (fleet-watchdog role):**
-  - Acts as the fleet's supervisor: independently verifies from the laptop that every cloud agent's cron actually fired that day (counting both GitHub `schedule` and fleet-scheduler `workflow_dispatch` events), catching a silently dead agent that its own "stay silent when nothing to say" design would otherwise hide.
-  - `CRON_GRACE_MIN=105` accounts for the +60min backup cron and `Persistent=true` morning catch-up runs, so "not due yet" is never misreported as a miss.
-  - Also watches the other local agent (housekeeper via systemd) and guards against silent `agentlib.py` drift across the fleet.
-  - Roster (`CLOUD_AGENTS`/`WEEKLY_AGENTS`) is hand-maintained in sync with the fleet; repo roots are portable via `REVIEW_ROOTS`.
-- **Key dependencies:** `requests~=2.34`, `python-dotenv~=1.2` (imports shared `agentlib.py` from `~/agents/common/`; also requires an authenticated `gh` CLI at runtime).
-
----
-
-*Each agent's own repo README carries the fullest detail and rationale — this
-page is the cross-fleet index. For the shared system all these agents run on,
-see **[ARCHITECTURE.md](ARCHITECTURE.md)**.*
