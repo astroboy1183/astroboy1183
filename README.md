@@ -2,164 +2,166 @@
 
 # Jayanth Appalla
 
-**Data & AI engineer — I build systems that run themselves**
+**Data Engineer — data platforms, AI systems, and automation that runs itself**
 
 [![Portfolio](https://img.shields.io/badge/Portfolio-jayanthappalla.com-6f42c1?style=for-the-badge&logo=safari&logoColor=white)](https://jayanthappalla.com)
 &nbsp;
-[![Fleet](https://img.shields.io/badge/agents-12-1f6feb?style=for-the-badge&logo=githubactions&logoColor=white)](AGENTS.md)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-jayanth--appalla-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/jayanth-appalla/)
 &nbsp;
-[![Dispatch](https://img.shields.io/badge/dispatch-~6s-238636?style=for-the-badge&logo=cloudflare&logoColor=white)](ARCHITECTURE.md)
+[![Email](https://img.shields.io/badge/Email-jayanthapalla%40gmail.com-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:jayanthapalla@gmail.com)
+
+🏢 ex-AWS (DynamoDB) · 🎓 MS CS, University of Illinois Chicago · 📜 4 certifications · 📝 published researcher
 
 </div>
 
 ---
 
-Every morning at 6:00 my phone lights up with messages I didn't write —
-the weather, what's in my inbox, seven sections of news, the ten blog
-posts worth reading, my own money movement, a code review of everything
-I pushed yesterday. They come from **12 agents I built**, each its own
-repo, schedule, and Telegram bot, running on nobody's server for pennies
-a month. They alert loudly when something breaks and stay silent when
-there's nothing to say.
+## 👋 About me
 
-Data engineer by trade. I automate my own life for practice — and build
-it all in public.
+I'm a data engineer at **[trigyan.io](https://trigyan.io)**, building the data
+platform behind a healthcare product. Before this: **AWS**, on the DynamoDB
+team — backup/restore and import at multi-TB scale — and Azure
+Databricks lakehouse work in consulting. ~3 years in industry, MS in
+Computer Science from UIC.
 
-**Where to start, depending on who you are:**
+What I like working on: pipelines that move serious data (Spark, Kafka,
+Databricks, medallion architectures), and **LLM systems with real
+engineering discipline** — deterministic where possible, model calls only
+where judgment helps, everything tested and observable. To practice
+what I preach, I built a fleet of 12 autonomous agents that runs my
+mornings — more below.
 
-- *"Show me the engineering"* → [ARCHITECTURE.md](ARCHITECTURE.md) — how
-  a serverless clock, throwaway VMs, and per-agent memory make a
-  zero-server fleet reliable (including the incident where GitHub's cron
-  ran 4 hours late and what replaced it)
-- *"Show me each agent"* → [AGENTS.md](AGENTS.md) — inputs, pipeline,
-  where the LLM is (and deliberately isn't) used, per agent
-- *"Show me projects"* → [Projects & apps](#-projects--apps) below
-- *"Just the website"* → [jayanthappalla.com](https://jayanthappalla.com)
+**Certifications:** Microsoft Fabric Data Engineer (2025) · Databricks
+Certified Associate Data Engineer (2025) · Microsoft Certified
+Administrator Associate (2025) · Tableau Desktop Specialist (2024)
 
 ---
 
-## 🤖 The agent fleet
+## 🔄 Now
 
-The whole fleet delivers at **06:00 IST sharp**, dispatched at its exact
-minute by a Cloudflare Worker
-([fleet-scheduler](https://github.com/astroboy1183/fleet-scheduler) —
-GitHub's own cron ran 4 hours late the morning I measured it; the
-Worker's dispatches land in ~6 seconds). Guarded GitHub crons as
-backups, failure alerts to Telegram, offline test suites in CI, and
-state memory the workflows commit back after every run — the agents
-remember yesterday.
+*This section updates itself every morning — data from my own repos and
+agents, no hands involved.*
 
-| Agent | What it does | When (IST) |
-|---|---|---|
-| [weather-report](https://github.com/astroboy1183/weather-report) | 24-city forecast + AQI, severe-weather watch, no LLM | 06:00 |
-| [mail-digest](https://github.com/astroboy1183/mail-digest) | Gmail → VIP / NEEDS ACTION / CARRIED / deadline ledger, deep links | 06:00 + 19:00 sweep |
-| [news-briefing](https://github.com/astroboy1183/news-briefing) | 7-section news from 45 sources (incl. 🏛 India + 🗽 US politics), article-grounded | 06:00 + 21:00 wrap |
-| [cricket-scores](https://github.com/astroboy1183/cricket-scores) | Sectioned scores; lunch edition on India days; Sunday Cricsheet stats | 06:00, 13:37, 21:47 |
-| [tech-news](https://github.com/astroboy1183/tech-news) | Flagship 9-section briefing, core topics 10-deep, HN TOP + CISA patch-now | 06:00 + 19:15 wrap |
-| [finance-tracker](https://github.com/astroboy1183/finance-tracker) | Ledger-backed income/expense from bank alerts — model classifies, Python sums | 06:00 |
-| [papers-digest](https://github.com/astroboy1183/papers-digest) | Weekly arXiv: ~2,500 papers → 4 interest sections + HF-trending + spotlight | Sat 06:00 |
-| [eng-blogs](https://github.com/astroboy1183/eng-blogs) | Daily top-10 reading list from 38 blogs, interest-ranked, never repeats | 06:00 |
-| [repo-review](https://github.com/astroboy1183/repo-review) | Reviews every diff I push, remembers findings; CI health, hygiene scores | 06:00 |
-| [repo-audit](https://github.com/astroboy1183/repo-audit) | On-demand X-ray of every repo I own → report cards + dashboard | button-press |
-| [housekeeper](https://github.com/astroboy1183/housekeeper) *(local)* | Laptop health — disk, temps, kernel errors, cleanup ledger — **+ the fleet watchdog** | 06:00 |
+<!--NOW-START-->
+⚙️ **205 commits** across 13 repos this week
 
-### 🧱 Fleet infrastructure
+🚢 last shipped: *"Profile revamp: visitor reading paths, honest project table,"* in `astroboy1183`
 
-| Repo | Role |
-|---|---|
-| [fleet-scheduler](https://github.com/astroboy1183/fleet-scheduler) | The fleet's **clock**: a Cloudflare Worker dispatching every workflow at its exact minute (schema-tested in CI) |
-| [common](https://github.com/astroboy1183/common) | The **shared library**: one reference `agentlib.py`; every vendored copy is drift-checked against it daily |
-| fleet *(private)* | The **workspace hub**: a devcontainer + `clone-all.sh` that assembles everything in a Codespace |
+🤖 agent fleet: **8/8 green** yesterday
 
-> Every repo's README covers what it does, how the code works, and the
-> design decisions — start with any of them.
+<sub>last updated 11 Jul 2026 — automatically</sub>
+<!--NOW-END-->
 
 ---
 
-## 🛠 Projects & apps
+## 💼 Experience, briefly
 
-Standalone projects, separate from the fleet. Several are active works
-in progress — my own audit agent keeps score of which need finishing.
+- **Trigyan** — Data Engineer *(current)*: data platform for a
+  healthcare product
+- **Amazon Web Services** — SDE, DynamoDB: multi-TB backup/import/restore
+  service; raised the import S3-object limit 10k → 100k, cutting large
+  import times ~20%; on-call for a tier-1 service
+- **SPV Consulting** — Data Engineer: Azure Databricks pipelines at
+  gigabyte scale (partitioning, Z-ordering, caching), Bronze/Silver/Gold
+  modeling, Power BI delivery
+- Earlier: ServiceNow ITSM/ITOM integration work; SAP Analytics + Java/Spring
+  microservices at Incture; NLP chatbots intern at Hindustan Unilever
+
+**Publication:** *"Real-time Object Detection and Face Recognition
+System to Assist the Visually Impaired"* — Journal of Physics:
+Conference Series, Vol. 1706 (IOP), 2020 — YOLO + Kafka-streamed video
+on Android.
+
+Full resume on [my site](https://jayanthappalla.com) · full history on
+[LinkedIn](https://www.linkedin.com/in/jayanth-appalla/).
+
+---
+
+## 🛠 Projects
 
 | Project | What it is |
 |---|---|
-| [news-intelligence-platform](https://github.com/astroboy1183/news-intelligence-platform) | Async FastAPI backend for news aggregation and querying — the deepest of these (Python) |
+| [news-intelligence-platform](https://github.com/astroboy1183/news-intelligence-platform) | Async FastAPI backend for news aggregation and querying (Python) |
 | [election-dashboard](https://github.com/astroboy1183/election-dashboard) | Election-results dashboard with real data modeling and caching (TypeScript) |
 | [DocMind](https://github.com/astroboy1183/DocMind) | RAG document Q&A — parse, embed, ask (Python) |
 | [ipl-intelligence-platform](https://github.com/astroboy1183/ipl-intelligence-platform) | IPL cricket analytics API (TypeScript) |
 | [SmartDay-App](https://github.com/astroboy1183/SmartDay-App) | Day-planner mobile app — Expo + SQLite (TypeScript) |
 | [Quiz-App](https://github.com/astroboy1183/Quiz-App) | Quiz backend with async plumbing, auth and migrations (Python) |
 | [sentiment-analysis](https://github.com/astroboy1183/sentiment-analysis) | Sentiment-analysis baseline with a real test suite (Python) |
-| [astroboy1183.github.io](https://github.com/astroboy1183/astroboy1183.github.io) | Source of [jayanthappalla.com](https://jayanthappalla.com) |
 
-## 🔭 Currently building
-
-- A **fleet telemetry lakehouse** — dbt + DuckDB over the fleet's own
-  run history (now that the crons fire on time, the delay data has a
-  baseline)
-- **RAG with real evals** over my engineering-blog archive — the corpus
-  accumulates daily via eng-blogs; Qdrant + a golden-question harness
-  next
-- A **streaming pipeline** — Kafka → Spark Structured Streaming — over a
-  live feed
-- A **one-button UI** for repo-audit — dispatch the audit, watch it run,
-  read the fresh report
+**Currently building:** a fleet telemetry lakehouse (dbt + DuckDB over
+my agents' run history) · RAG with real evals over a daily-growing
+engineering-blog corpus · a Kafka → Spark Structured Streaming pipeline.
 
 ---
 
-## 📚 Courses & learning in public
+## 🤖 The agent fleet (the side project that runs my life)
 
-**Currently working through:**
+Twelve autonomous agents — each its own repo, schedule, Telegram bot and
+memory — deliver my mornings at 06:00 IST sharp: weather, mail triage,
+7-section news, a 9-section tech briefing, my own money movement, a
+code review of everything I pushed yesterday, a top-10 reading list.
+Zero servers: a Cloudflare Worker dispatches GitHub Actions at exact
+minutes (~6s, after GitHub's own cron once ran 4 hours late), state is
+committed back after every run, and a watchdog notices any agent that
+silently dies.
 
-- **Data structures & algorithms** — daily practice in
-  [Data-Structures-and-Algorithms](https://github.com/astroboy1183/Data-Structures-and-Algorithms)
-  and [Leetcode-Problems](https://github.com/astroboy1183/Leetcode-Problems)
-- **Python for AI engineering** —
-  [Python-AI](https://github.com/astroboy1183/Python-AI) (code) ·
-  [Python-AI-Notes](https://github.com/astroboy1183/Python-AI-Notes)
-  (notes — the most polished of my study repos)
-- **Core tooling notes** —
-  [study-notes](https://github.com/astroboy1183/study-notes): Git &
-  GitHub, core Python concepts
-
-**Coursework archive** (done, kept for the record):
-[IBM Data Science](https://github.com/astroboy1183/Coursera-IBM-Data-Science) ·
-[Machine-Learning](https://github.com/astroboy1183/Machine-Learning) ·
-[kaggle](https://github.com/astroboy1183/kaggle) ·
-[Python-Masterclass](https://github.com/astroboy1183/Python-Masterclass) ·
-[Java-Masterclass](https://github.com/astroboy1183/Java-Programming-Masterclass)
+**The engineering story → [ARCHITECTURE.md](ARCHITECTURE.md)** ·
+**every agent in detail → [AGENTS.md](AGENTS.md)**
 
 ---
 
-## 🌐 The website
+## 🧰 Skills
 
-**[jayanthappalla.com](https://jayanthappalla.com)** — my portfolio:
-who I am, selected projects, and a working contact form. Built as a
-single fast static page (source:
-[astroboy1183.github.io](https://github.com/astroboy1183/astroboy1183.github.io)),
-served via GitHub Pages on a custom domain.
-
----
-
-## 📌 Stack
-
-![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
-![SQL](https://img.shields.io/badge/SQL-4479A1?style=flat-square&logo=postgresql&logoColor=white)
-![Apache Spark](https://img.shields.io/badge/Spark-E25A1C?style=flat-square&logo=apachespark&logoColor=white)
+**Data engineering**  
+![Apache Spark](https://img.shields.io/badge/Spark%20%2F%20PySpark-E25A1C?style=flat-square&logo=apachespark&logoColor=white)
 ![Apache Kafka](https://img.shields.io/badge/Kafka-231F20?style=flat-square&logo=apachekafka&logoColor=white)
-![Airflow](https://img.shields.io/badge/Airflow-017CEE?style=flat-square&logo=apacheairflow&logoColor=white)
+![Databricks](https://img.shields.io/badge/Azure%20Databricks-FF3621?style=flat-square&logo=databricks&logoColor=white)
+![Snowflake](https://img.shields.io/badge/Snowflake-29B5E8?style=flat-square&logo=snowflake&logoColor=white)
+![Delta Lake](https://img.shields.io/badge/Delta%20Lake-003366?style=flat-square&logo=delta&logoColor=white)
 ![dbt](https://img.shields.io/badge/dbt-FF694B?style=flat-square&logo=dbt&logoColor=white)
 ![DuckDB](https://img.shields.io/badge/DuckDB-FFF000?style=flat-square&logo=duckdb&logoColor=black)
+![Airflow](https://img.shields.io/badge/Airflow-017CEE?style=flat-square&logo=apacheairflow&logoColor=white)
+![Azure Data Factory](https://img.shields.io/badge/Azure%20Data%20Factory-0078D4?style=flat-square&logo=microsoftazure&logoColor=white)
+
+**Languages & backend**  
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
+![SQL](https://img.shields.io/badge/SQL-4479A1?style=flat-square&logo=postgresql&logoColor=white)
+![Java](https://img.shields.io/badge/Java%20%2F%20Spring-6DB33F?style=flat-square&logo=spring&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
-![Qdrant](https://img.shields.io/badge/Qdrant-DC244C?style=flat-square&logo=qdrant&logoColor=white)
+
+**AI / ML systems**  
+![RAG](https://img.shields.io/badge/RAG%20%2B%20hybrid%20search-412991?style=flat-square&logo=anthropic&logoColor=white)
+![Vector DBs](https://img.shields.io/badge/Vector%20DBs%20%2F%20Qdrant-DC244C?style=flat-square&logo=qdrant&logoColor=white)
+![MCP](https://img.shields.io/badge/Model%20Context%20Protocol-000000?style=flat-square&logo=anthropic&logoColor=white)
+![Hugging Face](https://img.shields.io/badge/Hugging%20Face-FFD21E?style=flat-square&logo=huggingface&logoColor=black)
+![TensorFlow](https://img.shields.io/badge/TensorFlow-FF6F00?style=flat-square&logo=tensorflow&logoColor=white)
+
+**Analytics & infra**  
+![Power BI](https://img.shields.io/badge/Power%20BI-F2C811?style=flat-square&logo=powerbi&logoColor=black)
+![Tableau](https://img.shields.io/badge/Tableau-E97627?style=flat-square&logo=tableau&logoColor=white)
 ![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-2088FF?style=flat-square&logo=githubactions&logoColor=white)
 ![Cloudflare Workers](https://img.shields.io/badge/Cloudflare%20Workers-F38020?style=flat-square&logo=cloudflare&logoColor=white)
-![systemd](https://img.shields.io/badge/systemd-000000?style=flat-square&logo=linux&logoColor=white)
-![LLM APIs](https://img.shields.io/badge/LLM%20APIs-412991?style=flat-square&logo=anthropic&logoColor=white)
+![systemd](https://img.shields.io/badge/Linux%20%2F%20systemd-000000?style=flat-square&logo=linux&logoColor=white)
+
+---
+
+## 📚 Learning in public
+
+Daily DSA practice
+([Data-Structures-and-Algorithms](https://github.com/astroboy1183/Data-Structures-and-Algorithms),
+[Leetcode-Problems](https://github.com/astroboy1183/Leetcode-Problems)) ·
+Python for AI engineering
+([code](https://github.com/astroboy1183/Python-AI),
+[notes](https://github.com/astroboy1183/Python-AI-Notes)) ·
+tooling notes ([study-notes](https://github.com/astroboy1183/study-notes))
+
+---
 
 <div align="center">
 
-**📬 Reach me** — via the [contact form](https://jayanthappalla.com/#contact) on my site
+**🌐 [jayanthappalla.com](https://jayanthappalla.com)** — portfolio,
+projects and a working [contact form](https://jayanthappalla.com/#contact)
 
 </div>
