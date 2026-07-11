@@ -1,6 +1,6 @@
 # Fleet architecture
 
-How a fleet of ~14 autonomous personal agents runs every day with **zero
+How a fleet of a dozen autonomous personal agents runs every day with **zero
 always-on servers**, delivers to Telegram, and stays reliable — end to end.
 
 > **TL;DR** — A serverless clock (Cloudflare Worker) wakes a throwaway VM
@@ -45,7 +45,7 @@ Three facts explain almost everything:
 ```mermaid
 flowchart LR
     CF["⏰ Cloudflare Worker<br/>(the clock)"] -->|"workflow_dispatch<br/>(GitHub API)"| GH["🖥️ GitHub Actions<br/>(throwaway VM)"]
-    GH -->|fetch| SRC["🌐 Data sources<br/>weather · Gmail · RSS · markets"]
+    GH -->|fetch| SRC["🌐 Data sources<br/>weather · Gmail · RSS · arXiv"]
     GH -->|"ask_llm()"| CLAUDE["🧠 Claude (Anthropic API)<br/>summarize / classify"]
     GH -->|"send_telegram()"| TG["📨 Telegram Bot API"]
     TG -->|push| PHONE["📱 My phone"]
@@ -66,7 +66,7 @@ hub's `CLAUDE.md`):
 | **Fail loud, or stay silent — never filler** | A failure alerts immediately on Telegram. An agent with nothing worth saying (e.g. no notable cricket match) sends *nothing* rather than noise. |
 | **Punctual primary + reliable backup** | A Cloudflare Worker dispatches on time; GitHub's own cron is a late-but-reliable fallback. Guards prevent double-sends. |
 | **State saved *after* the send** | An agent that benefits from memory commits a small `state/` file back — but only after delivery succeeds, so a state failure never costs a message. |
-| **Deterministic where possible** | If the job is mechanical (weather, markets), there's **no LLM** — cheaper, faster, no hallucination surface. The model is used only where judgment helps. |
+| **Deterministic where possible** | If the job is mechanical (weather), there's **no LLM** — cheaper, faster, no hallucination surface. The model is used only where judgment helps. |
 | **Minimal dependencies** | Python standard library preferred; the only shared third-party reach is `requests` and the Anthropic SDK. |
 | **Tests run in CI** | Repos with suites run `tests.yml` on every push; offline, no secrets needed. |
 
@@ -78,7 +78,7 @@ The fleet runs on **two different clocks and two different computers**, but
 the *last mile is identical* — every agent ends by calling the same
 `send_telegram()`.
 
-### Plane A — Cloud agents (12)
+### Plane A — Cloud agents (10 scheduled + 1 on-demand)
 
 Scheduled by the Cloudflare Worker, executed on GitHub Actions runners.
 Used for anything that doesn't need the laptop.
@@ -185,7 +185,7 @@ Every agent is one file, `<agent>.py`, with a `main()` that:
 1. **Fetches** its inputs (HTTP APIs, RSS, Gmail, the GitHub API, local
    system probes…).
 2. **Optionally calls Claude** via `ask_llm()` to summarize, classify, rank,
-   or dedupe. **2 of 14 agents skip this entirely** (weather, markets — pure
+   or dedupe. **weather skips this entirely** (pure
    deterministic formatting). `papers-digest` and `repo-review` call it
    **twice** (multi-stage: shortlist, then deep review).
 3. **Builds the message** and calls `send_telegram(text)` — the final step.
@@ -229,7 +229,7 @@ what to do with it.
 `send_telegram()` makes an ordinary HTTPS `POST` **from the runner** to the
 Telegram Bot API. The message is addressed to my `chat_id`; Telegram's servers
 push it to every device I'm logged into. Each agent has its **own bot token**,
-so messages arrive from distinct senders ("weather bot", "markets bot") into
+so messages arrive from distinct senders ("weather bot", "cricket bot") into
 one Telegram — a natural, labelled inbox. Setup was one-time: create the bot
 via BotFather → get its token → open a chat with it → record my chat id.
 

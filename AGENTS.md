@@ -39,26 +39,14 @@ multi-call. Times are IST.
 - **Key dependencies:** `requests`, `python-dotenv`.
 
 ### mail-digest
-- **Purpose:** Sends one morning Telegram digest of all Gmail from the previous 24h, sorted into NEEDS ACTION / FYI / NOISE.
-- **Schedule (IST):** 06:00 primary, 07:00 backup (`30 0 * * *` / `30 1 * * *` UTC); 19:00 evening sweep.
-- **Inputs / data sources:** Gmail API (via `google-api-python-client`, `gmail.readonly` OAuth) — messages list + metadata-only fetch; the Anthropic API for summarization; `VIP_SENDERS` secret; `state/noise.json`.
-- **Pipeline:**
-  1. `digest_window` — compute the anchored 24h window ending at the most recent 6:00 AM IST.
-  2. `gmail_service` — authenticate (silent token refresh; raises in CI if token unusable).
-  3. `fetch_emails` — one Gmail search (`after/before -category:spam`), paginated, then per-message metadata fetch (From, Subject, snippet); builds deep link, VIP flag, threadId.
-  4. `group_by_thread` — collapse same-thread messages to one representative entry with a count.
-  5. `summarize` — **1 Claude call** (`claude-haiku-4-5`, `max_tokens=4000`): sorts the day's threads into a fixed headline / NEEDS ACTION / FYI / NOISE shape and appends a hidden `===STATE===` JSON tail listing the senders it counted as noise. Empty inbox skips the model entirely.
-  6. `split_state` separates digest from noise-sender JSON; `validate_links` strips any Gmail link the model didn't copy verbatim.
-  7. Prepend deterministic `vip_block`, add Sunday `unsubscribe_block`, `send_telegram`.
-  8. After the send, record today's noise senders into `state/noise.json`.
-- **LLM role:** 🧠 1 Claude call — the model decides classification (needs-action vs. FYI vs. noise) and per-item summaries; VIP surfacing and link validity are enforced deterministically around it.
-- **State / memory:** `state/noise.json` — `{sender: [dates filed as noise]}`, pruned to a 14-day window, committed back by the workflow; drives Sunday unsubscribe suggestions (noise on ≥5 of last 14 days).
-- **Output format:** Header (date + exact window + raw email count), optional 🔔 VIP block, then the model's headline + NEEDS ACTION / FYI / NOISE sections; on Sundays an optional 📉 Unsubscribe-candidates block. An empty inbox sends "Quiet inbox: no email in 24h ☕".
-- **Notable design decisions:**
-  - Anchored (not rolling) window so a delayed backup run covers the exact same day with no gaps/overlap.
-  - VIP mail guaranteed visible via a code-generated block, independent of model behavior.
-  - Hallucinated Gmail links replaced with `[invalid link removed]`.
-  - State saved only after the send, and OAuth files are materialized from secrets at run time (never committed).
+- **Purpose:** The inbox guardian — a morning digest of the last 24h of Gmail (VIP block, numbered NEEDS ACTION deadline-first, CARRIED unanswered actions with ages, a 📅 deadline ledger, SECURITY alerts, FYI, still-unread pile, deterministic noise counts) plus a 19:00 evening sweep that is silent unless something genuinely can't wait until morning. Sundays add a 📊 week scorecard, VIP suggestions mined from sent mail, and unsubscribe candidates.
+- **Schedule (IST):** 06:00 primary, 07:00 backup (`30 0 * * *` / `30 1 * * *` UTC) + the 19:00 sweep; 3-hour dedupe guard window pairs each backup with its edition.
+- **Inputs / data sources:** Gmail API (read-only OAuth; SENT label checked to verify replies), the Anthropic API, the `VIP_SENDERS` secret, and four memories in `state/`: noise trends, weekly stats, the carried-action ledger, and the deadline ledger.
+- **Pipeline:** anchored 6AM→6AM window → fetch + thread-group → **1 Claude call** classifies and extracts actions/deadlines into a `===STATE===` JSON tail → deterministic blocks assembled around it (VIP guaranteed by code, CARRIED verified via thread_replied(), Ahead ledger date-validated, hallucinated Gmail links stripped) → send → state saved after the send.
+- **LLM role:** 🧠 1 call — classification and action extraction; VIP surfacing, carry-over verification, deadline validation and link validity are code-enforced.
+- **State / memory:** `state/noise.json`, `stats.json`, `actions.json`, `deadlines.json` — committed back by the workflow.
+- **Output format:** Header (window + counts), 📅 Ahead, 🔔 VIP, ⚡ NEEDS ACTION (numbered), 🔁 CARRIED (with ages), 🚨 SECURITY (omitted when none), 📥 FYI, ⏳ STILL UNREAD, 🗑 noise line; Sunday extras. Evening sweep: silent unless can't-wait.
+- **Notable design decisions:** anchored windows (backup covers the identical day); the carry-over ledger checks the SENT label so "replied" is a fact, not a guess; deadlines must parse as real dates to enter the ledger.
 - **Key dependencies:** `google-api-python-client`, `google-auth`, `google-auth-oauthlib`, `anthropic`, `requests`, `python-dotenv`.
 
 ### news-briefing
@@ -86,21 +74,14 @@ multi-call. Times are IST.
 - **Key dependencies:** `feedparser`, `anthropic`, `requests`, `python-dotenv`.
 
 ### cricket-scores
-- **Purpose:** Filters the ESPN Cricinfo live-scores board down to matches worth attention (India at any level, majors' internationals, IPL/WPL) and delivers them to Telegram twice a day.
-- **Schedule (IST):** 06:00 (overnight matches, backup 07:00), 13:37 lunch (India match days) and ~21:47 (day's results, backup 22:47).
-- **Inputs / data sources:** Cricinfo live-scores RSS (`https://static.cricinfo.com/rss/livescores.xml`) — up to 25 score-line titles.
-- **Pipeline:**
-  1. `gather_scores()` parses the RSS with feedparser; returns `None` if unreachable (network error / HTTP ≥400 / bozo with no entries), `[]` if reached but empty, else up to 25 titles.
-  2. `notable(scores)` makes **1 Claude call** (`max_tokens=300`) used as a filter: keeps only qualifying lines verbatim (max 5), or outputs the sentinel `NONE` → empty list.
-  3. `main()` raises on a dead feed (loud failure), stays silent on empty/no-notable, else sends. `CRICKET_FORCE=1` overrides silence with a placeholder line.
-- **LLM role:** 🧠 1 Claude call — the model decides which score lines qualify as notable and copies them verbatim (it must not paraphrase scores); `NONE` when nothing qualifies.
+- **Purpose:** Filters the Cricinfo live-scores board down to matches worth attention (India at any level, majors' internationals — men's and women's equally — IPL/WPL) across three editions: morning overnight matches, a lunch edition that exists only on India match days, and the day's results in the evening. Sunday evenings add 📊 SERIES STATS — leaderboards computed deterministically from Cricsheet's open ball-by-ball archives.
+- **Schedule (IST):** 06:00 (backup 07:00), 13:37 lunch (deterministically silent unless an India side is on the board), 21:47 evening (backup 22:47); 3-hour dedupe guard window.
+- **Inputs / data sources:** Cricinfo live-scores RSS (up to 25 score lines) and, Sunday evenings, Cricsheet's 30-day ball-by-ball JSON zip (keyless open data, ~300 matches).
+- **Pipeline:** `gather_scores()` three-way contract (None = dead feed → raise; [] = quiet board → silent; lines) → lunch gate `india_on_board()` (deterministic substring check, no model call on ordinary lunchtimes) → **1 Claude call** sections the kept lines verbatim into 🔴 LIVE / ✅ RESULTS / 📅 UPCOMING with 🇮🇳/🚺 flags → Sundays `series_stats()` computes top run-getters/wicket-takers per tracked series in pure Python (run-outs not credited to bowlers) → send or stay silent.
+- **LLM role:** 🧠 1 call as a filter/sectioner — score numbers are always copied verbatim; the stats block is entirely deterministic.
 - **State / memory:** none.
-- **Output format:** `🏏 Cricket — <date>` header then the kept score lines, one per line. Silent when the board is empty or nothing qualifies (a message always means a match worth checking).
-- **Notable design decisions:**
-  - Three-way `None`/`[]`/`[...]` contract separates real breakage (raise, fires failure alert) from a genuinely quiet day (silent).
-  - Machine-checkable `NONE` sentinel instead of parsing prose.
-  - Upcoming India fixtures on the board are kept so a match never starts unannounced.
-  - Dedupe guard uses a 3-hour window (not "today") so each backup pairs with its own edition while the evening edition still runs after the morning one.
+- **Output format:** `🏏 Cricket — <date> (<edition>)`, sectioned lines, 🇮🇳 first, women's matches 🚺-tagged; Sunday evenings append the 📊 stats block. Silent when nothing notable.
+- **Notable design decisions:** the lunch edition costs nothing on non-India days (deterministic gate before any model call); Cricsheet gives real leaderboards with no stats API and no hallucination surface; every keyless live-data API was probed and found bot-walled — the RSS stays the spine.
 - **Key dependencies:** `feedparser`, `anthropic`, `requests`, `python-dotenv`.
 
 ### tech-news

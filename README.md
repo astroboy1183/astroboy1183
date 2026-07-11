@@ -17,8 +17,8 @@
 ---
 
 Every morning my phone lights up with messages I didn't write — the weather,
-what's in my inbox, where the markets opened, the one DSA problem I should
-solve today. They come from **14 agents I built**, each its own repo, schedule,
+what's in my inbox, the ten blog posts worth reading, the papers that
+mattered this week. They come from **12 agents I built**, each its own repo, schedule,
 and Telegram bot, running on nobody's server for pennies a month. They alert
 loudly when something breaks and stay silent when there's nothing to say.
 
@@ -39,19 +39,17 @@ commit back after every run — so the agents remember yesterday.
 | Agent | What it does | When (IST) |
 |---|---|---|
 | [weather-report](https://github.com/astroboy1183/weather-report) | 24-city forecast + AQI, severe-weather watch, no LLM | 06:00 |
-| [mail-digest](https://github.com/astroboy1183/mail-digest) | Gmail → NEEDS ACTION / FYI / NOISE, deep links, unsubscribe trends | 06:07 |
-| [news-briefing](https://github.com/astroboy1183/news-briefing) | 5-section news from 30 sources, article-grounded bullets | 06:00 |
-| [cricket-scores](https://github.com/astroboy1183/cricket-scores) | Sectioned scores; lunch edition on India days | 06:17, 13:37, 21:47 |
-| [tech-news](https://github.com/astroboy1183/tech-news) | Sectioned tech briefing, HN ranked by real points | 06:59 |
-| [markets-brief](https://github.com/astroboy1183/markets-brief) | Nifty · Sensex · S&P · Nasdaq · USD/INR · gold · BTC | 07:33 |
-| [release-radar](https://github.com/astroboy1183/release-radar) | Weekly releases across my dependency stack, security first | Mon 07:37 |
-| [study-coach](https://github.com/astroboy1183/study-coach) | One DSA problem/day, aimed at my practice gaps | 08:07 |
-| [finance-tracker](https://github.com/astroboy1183/finance-tracker) | Income/expense from bank alerts — model classifies, Python sums | 08:31 |
-| [papers-digest](https://github.com/astroboy1183/papers-digest) | Weekly arXiv, two-stage model review of ~1500 papers | Sat 09:07 |
-| [eng-blogs](https://github.com/astroboy1183/eng-blogs) | 18 company engineering blogs + a growing full-text corpus | 19:07 |
-| [repo-review](https://github.com/astroboy1183/repo-review) | Reviews every diff I push, remembers its findings, follows through | 19:37 |
+| [mail-digest](https://github.com/astroboy1183/mail-digest) | Gmail → VIP / NEEDS ACTION / CARRIED / deadline ledger, deep links | 06:00 + 19:00 sweep |
+| [news-briefing](https://github.com/astroboy1183/news-briefing) | 7-section news from 45 sources (incl. 🏛 India + 🗽 US politics), article-grounded | 06:00 + 21:00 wrap |
+| [cricket-scores](https://github.com/astroboy1183/cricket-scores) | Sectioned scores; lunch edition on India days; Sunday Cricsheet stats | 06:00, 13:37, 21:47 |
+| [tech-news](https://github.com/astroboy1183/tech-news) | Flagship 9-section briefing, core topics 10-deep, HN TOP + CISA patch-now | 06:00 + 19:15 wrap |
+| [finance-tracker](https://github.com/astroboy1183/finance-tracker) | Ledger-backed income/expense from bank alerts — model classifies, Python sums | 06:00 |
+| [papers-digest](https://github.com/astroboy1183/papers-digest) | Weekly arXiv: ~2,500 papers → 4 interest sections + HF-trending + spotlight | Sat 06:00 |
+| [eng-blogs](https://github.com/astroboy1183/eng-blogs) | Daily top-10 reading list from 38 blogs, interest-ranked, never repeats | 06:00 |
+| [repo-review](https://github.com/astroboy1183/repo-review) | Reviews every diff I push, remembers findings; CI health, hygiene scores | 06:00 |
+| [repo-audit](https://github.com/astroboy1183/repo-audit) | On-demand X-ray of every repo → report cards + dashboard | button-press |
 
-…plus two local systemd agents —
+…plus a local systemd agent —
 [housekeeper](https://github.com/astroboy1183/housekeeper) (laptop
 health + the fleet watchdog, 06:00) — keeping the machine and the
 fleet itself honest.
@@ -101,8 +99,7 @@ fleet itself honest.
 ## 📚 Learning in public
 
 - [Data-Structures-and-Algorithms](https://github.com/astroboy1183/Data-Structures-and-Algorithms)
-  — daily DSA practice; this is the repo my study-coach agent reads to
-  aim problems at my weak topics
+  — daily DSA practice
 - [Leetcode-Problems](https://github.com/astroboy1183/Leetcode-Problems)
   — LeetCode solutions
 - [Python-AI](https://github.com/astroboy1183/Python-AI) ·
