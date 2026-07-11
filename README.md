@@ -44,7 +44,7 @@ runs my mornings — more below.
 agents, no hands involved.*
 
 <!--NOW-START-->
-⚙️ **206 commits** across 13 repos this week
+⚙️ **185 commits** across 12 repos this week
 
 🚢 last shipped: *"Person-first profile: about, experience, certifications, pub"* in `astroboy1183`
 
