@@ -49,9 +49,9 @@ AWS Certified Cloud Practitioner (2023)
 agents, no hands involved.*
 
 <!--NOW-START-->
-⚙️ **207 commits** across 13 repos this week
+⚙️ **189 commits** across 12 repos this week
 
-🚢 last shipped: *"README becomes a build artifact"* in `astroboy1183`
+🚢 last shipped: *"Merge pull request #2 from astroboy1183/resume-update-202607"* in `astroboy1183`
 
 🤖 agent fleet: **8/8 green** yesterday
 
@@ -63,9 +63,9 @@ agents, no hands involved.*
 ## 💼 Experience, briefly
 
 - **Trigyan** — Data Engineer *(current)*: data platform for a healthcare product
-- **Amazon Web Services** — SDE, DynamoDB: multi-TB backup/import/restore service; raised the import S3-object limit 10k → 100k, cutting large import times ~20%; on-call for a tier-1 service
 - **SPV Consulting** — Data Engineer: Azure Databricks pipelines at gigabyte scale (partitioning, Z-ordering, caching), Bronze/Silver/Gold modeling, Power BI delivery
-- **Earlier**: ServiceNow ITSM/ITOM integration work; SAP Analytics + Java/Spring microservices at Incture; NLP chatbots intern at Hindustan Unilever
+- **Amazon Web Services** — SDE, DynamoDB: multi-TB backup/import/restore service; raised the import S3-object limit 10k → 100k, cutting large import times ~20%; on-call for a tier-1 service
+- **Earlier**: ServiceNow ITSM/ITOM integration and AWS-ServiceNow integration at I-ConnectResources (certified ServiceNow Administrator, certified Appian developer); SAP Analytics + Java/Spring microservices at Incture; NLP chatbots intern at Hindustan Unilever
 
 **Publication:** *"Real-time Object Detection and Face Recognition System to Assist the Visually Impaired"* — Journal of Physics: Conference Series, Vol. 1706 (IOP), 2020 — YOLO + Kafka-streamed video on Android.
 
