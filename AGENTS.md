@@ -176,26 +176,14 @@ multi-call. Times are IST.
 ## 🌆 Evening cloud agents
 
 ### eng-blogs
-- **Purpose:** Every evening, deliver one Telegram message summarizing new posts from 18 company engineering blogs for a data engineer, while archiving each post into a growing full-text corpus for a future RAG project.
-- **Schedule (IST):** Daily 06:00 IST (`30 0 * * *` UTC), with a dedupe-guarded backup cron at 07:00 IST.
-- **Inputs / data sources:** 18 RSS/Atom feeds in three categories — Data & Analytics (Databricks, Confluent, Snowflake, AWS Big Data, dbt, DuckDB), Systems & Scale (Netflix, Uber, Meta, Cloudflare, Discord, Slack, Stripe, Dropbox), Product & ML Eng (Spotify, Airbnb, Pinterest, Canva). Default 24h lookback; also reads the current month's corpus file for dedup.
-- **Pipeline:**
-  1. **Fetch** — `gather_posts()` requests each feed over HTTP with a 20s timeout and a custom User-Agent (bare python-requests UA is rejected by some corporate feeds), then `feedparser.parse(resp.content)`.
-  2. **Cap** — takes the first `ENTRIES_PER_FEED` (8) entries, or a raised `PER_FEED_LIMIT` (30) for high-volume whole-blog feeds (Databricks, AWS Big Data, Stripe) so a busy day isn't truncated before the freshness check.
-  3. **Freshness filter** — `fresh()` keeps entries newer than the cutoff using the publish date (falling back to updated date only when there's no publish date); undated entries are dropped.
-  4. **Clean** — `clean()` strips HTML tags and collapses whitespace; summaries truncated to 400 chars.
-  5. **Archive (corpus growth)** — if any posts, `archive_posts()` appends new posts (deduped by link) to the monthly JSONL, fetching each post's full readable text first.
-  6. **Summarize (LLM)** — `summarize()` sends all posts grouped by category to one model call producing the sectioned digest.
-  7. **Deliver** — silent only when zero posts AND no feed failures (unless `ENG_BLOGS_FORCE=1`); a dead feed still triggers a send with a rot footer even on an otherwise-quiet day.
-- **LLM role:** 🧠 One Claude call per run — decides which posts to keep vs. drop as pure marketing, ranks within each section (deep-dives/postmortems above release notes), and writes each post's 1-2 sentence technical takeaway.
-- **State / memory:** `data/posts-YYYY-MM.jsonl` — one JSONL file per month, committed back by the workflow. Each record: `date`, `category`, `source`, `title`, `summary`, `link`, and `text` — the post's full readable text (`fetch_full_text` strips script/style/head/nav/footer/header then all tags, capped at 20,000 chars; blocked/paywalled hosts store an abstract-only record with empty text). Deduped by link against the current month's file. This is the raw corpus for the planned "ask-my-library" RAG project.
-- **Output format:** Header `📚 Engineering blogs — <Day DD Mon YYYY>` plus a new-post count, then plain-text sections `🗄 DATA & ANALYTICS`, `⚙️ SYSTEMS & SCALE`, `🚀 PRODUCT & ML ENG` (empty sections skipped); each post is "Source — title", 1-2 sentences, link on its own line. A `⚠️ feeds not responding:` footer lists failed feeds.
-- **Notable design decisions:**
-  - Silent-by-default — blogs post rarely, so any message means there's something to read; the sole exception is a feed-rot footer on an otherwise-silent day.
-  - Corpus is decoupled from delivery — full text is fetched and archived best-effort (an archive/OSError failure never costs the digest).
-  - Freshness uses publish-over-updated date to stop lightly-edited old posts re-entering the window; undated posts dropped since corporate feeds are reliably dated.
-  - Per-feed limit overrides and explicit timeouts protect against high-volume feeds being clipped and hanging hosts stalling the run.
-- **Key dependencies:** `feedparser`, `requests`, `python-dotenv`, `anthropic`.
+- **Purpose:** My daily engineering reading list — the 10 best unread posts across 33 verified blogs (companies + the individuals every good engineer reads), ranked against my interests, each with a specific blurb, a deterministic read-time and its link. A post is served exactly once, ever.
+- **Schedule (IST):** Daily 06:00 (`30 0 * * *` UTC), backup 07:00 with dedupe guard.
+- **Inputs / data sources:** 33 probed RSS feeds, the posts' own pages (blurbs + read-times from real text), the `BLOG_INTERESTS` secret, `state/served.json`.
+- **Pipeline:** gather the unserved POOL (newest first, feed-rot surfaced) → widen the candidate window (14→45→120→730d) until ≥30 candidates → **Claude call 1** (haiku) ranks vs interests (max 2/source, 1-2 wildcards, timeless-over-thin) with a deterministic top-up to exactly 10 → fetch each pick's full text → **Claude call 2** (sonnet) writes 2-3 specific sentences per pick (marker format, abstract fallback) → code composes the numbered message (headers, read-times at 230 wpm, links — the model never emits a URL) → send → record served links. Posts <48h old are archived to the `data/` JSONL corpus for the RAG project.
+- **LLM role:** 🧠 2 calls — rank + annotate; pool mechanics, diversity cap, top-up, read-times, links and composition are deterministic.
+- **State / memory:** `state/served.json` (800-day window — never re-serve) and `data/posts-YYYY-MM.jsonl` (full-text corpus), committed back by the workflow.
+- **Notable design decisions:** the reading-pool replaces silent-if-quiet — engineering blogs are too low-volume for "10 fresh daily", so quiet weeks reach into the unread archive instead of padding; code-owned composition makes hallucinated links structurally impossible.
+- **Key dependencies:** `feedparser`, `requests`, `anthropic`, `python-dotenv`.
 
 ### repo-review
 - **Purpose:** Every evening it reviews the last 24h of pushes across all of the owner's GitHub repos and delivers a tagged code review, a rotating deep-dive spotlight, and (weekly) portfolio advice to Telegram. Deterministic blocks ride along: 🏅 hygiene score /7 and 📌 TODO/FIXME debt markers on the spotlight, 🔴 CI HEALTH for repos whose latest Actions run failed, Sunday 🗓 WEEK IN CODE (activity memory + open-PR sweep), and 📈 RISING REPOS (new repos crossing ★300 this week, shown once ever).
