@@ -41,7 +41,7 @@ commit back after every run — so the agents remember yesterday.
 | [weather-report](https://github.com/astroboy1183/weather-report) | 24-city forecast + AQI, severe-weather watch, no LLM | 06:00 |
 | [mail-digest](https://github.com/astroboy1183/mail-digest) | Gmail → NEEDS ACTION / FYI / NOISE, deep links, unsubscribe trends | 06:07 |
 | [news-briefing](https://github.com/astroboy1183/news-briefing) | 5-section news from 30 sources, article-grounded bullets | 06:00 |
-| [cricket-scores](https://github.com/astroboy1183/cricket-scores) | Notable matches only — silent otherwise | 06:17 & 21:47 |
+| [cricket-scores](https://github.com/astroboy1183/cricket-scores) | Sectioned scores; lunch edition on India days | 06:17, 13:37, 21:47 |
 | [tech-news](https://github.com/astroboy1183/tech-news) | Sectioned tech briefing, HN ranked by real points | 06:59 |
 | [markets-brief](https://github.com/astroboy1183/markets-brief) | Nifty · Sensex · S&P · Nasdaq · USD/INR · gold · BTC | 07:33 |
 | [release-radar](https://github.com/astroboy1183/release-radar) | Weekly releases across my dependency stack, security first | Mon 07:37 |
