@@ -49,9 +49,9 @@ AWS Certified Cloud Practitioner (2023)
 agents, no hands involved.*
 
 <!--NOW-START-->
-⚙️ **219 commits** across 14 repos this week
+⚙️ **196 commits** across 12 repos this week
 
-🚢 last shipped: *"Watchdog watches only the active agents (fleet paused for cr"* in `housekeeper`
+🚢 last shipped: *"Fleet blurb reflects on-demand scaling; count stays derived"* in `astroboy1183`
 
 🤖 agent fleet: **8/8 green** yesterday
 
