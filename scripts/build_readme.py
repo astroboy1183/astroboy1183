@@ -23,6 +23,7 @@ import json
 import re
 import subprocess
 import sys
+import urllib.request
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
@@ -32,6 +33,7 @@ ROOT = Path(__file__).resolve().parent.parent
 README = ROOT / "README.md"
 TEMPLATE = ROOT / "template.md"
 PROFILE = ROOT / "profile.yaml"
+RESUME = ROOT / "resume.yaml"
 
 USER = "astroboy1183"
 DSA_REPOS = ["Data-Structures-and-Algorithms", "Leetcode-Problems"]
@@ -201,22 +203,96 @@ def now_block():
     return "<!--NOW-START-->\n" + "\n\n".join(lines) + "\n<!--NOW-END-->"
 
 
+# --- derived: career sections (from resume.yaml + live Credly) ----------------
+
+def credly_badges(user):
+    """[{name, year}] from a PUBLIC Credly profile — the zero-touch cert
+    source: pass an exam, the badge appears, the README follows.
+    [] on any failure; the resume.yaml baseline always stands."""
+    if not user:
+        return []
+    try:
+        req = urllib.request.Request(
+            f"https://www.credly.com/users/{user}/badges.json",
+            headers={"User-Agent": "profile-readme-builder/1.0"},
+        )
+        with urllib.request.urlopen(req, timeout=20) as resp:
+            data = json.load(resp)
+        out = []
+        for b in data.get("data", []):
+            name = (b.get("badge_template") or {}).get("name", "").strip()
+            issued = (b.get("issued_at") or "")[:4]
+            if name and issued.isdigit():
+                out.append({"name": name, "year": int(issued)})
+        return out
+    except Exception:
+        return []
+
+
+def merged_certifications(resume):
+    """resume.yaml baseline ∪ live Credly badges, deduped by normalized
+    name, newest first."""
+    certs = {c["name"].strip().casefold(): dict(c)
+             for c in resume.get("certifications", [])}
+    for badge in credly_badges(resume.get("credly_user")):
+        certs.setdefault(badge["name"].strip().casefold(), badge)
+    return sorted(certs.values(), key=lambda c: (-c["year"], c["name"]))
+
+
+def certifications_line(certs):
+    return "**Certifications:** " + " ·\n".join(
+        f"{c['name']} ({c['year']})" for c in certs
+    )
+
+
+def experience_block(resume):
+    lines = []
+    for job in resume.get("work", []):
+        role = job.get("role", "")
+        head = f"**{job['org']}**" + (f" — {role}" if role else "")
+        if job.get("current"):
+            head += " *(current)*"
+        lines.append(f"- {head}: {job['note']}")
+    parts = ["\n".join(lines)]
+    if resume.get("publication"):
+        parts.append(resume["publication"].strip())
+    if resume.get("experience_footer"):
+        parts.append(resume["experience_footer"].strip())
+    return "\n\n".join(parts)
+
+
+def about_slots(resume):
+    cur = resume.get("current", {})
+    return {
+        "CURRENT_ROLE": cur.get("role", "data engineer"),
+        "CURRENT_COMPANY_LINK":
+            f"**[{cur.get('company', '?')}]({cur.get('company_url', '')})**",
+        "CURRENT_FOCUS": cur.get("focus", ""),
+        "YEARS": resume.get("years_experience", ""),
+    }
+
+
 # --- assembly --------------------------------------------------------------------
 
 def build():
     profile = yaml.safe_load(PROFILE.read_text())
+    resume = yaml.safe_load(RESUME.read_text())
     template = TEMPLATE.read_text()
 
     table = projects_table(profile)
     if table is None:
         sys.exit("ABORT: projects table could not be built — keeping yesterday's README")
 
+    certs = merged_certifications(resume)
+    if not certs:
+        sys.exit("ABORT: certification list came out empty — keeping yesterday's README")
+
     count = fleet_count(profile)
     values = {
         "CREDIBILITY": profile["credibility"].strip(),
         "ABOUT": profile["about"].strip(),
-        "CERTIFICATIONS": profile["certifications"].strip(),
-        "EXPERIENCE": profile["experience"].strip(),
+        "CERTIFICATIONS": certifications_line(certs),
+        "EXPERIENCE": experience_block(resume),
         "PROJECTS_TABLE": table,
         "CURRENTLY_BUILDING": profile["currently_building"].strip(),
         "FLEET": profile["fleet"].strip(),
@@ -227,6 +303,9 @@ def build():
     for key, val in values.items():
         page = page.replace("{{" + key + "}}", val)
     page = page.replace("{{FLEET_COUNT}}", str(count))
+    page = page.replace("{{CERT_COUNT}}", str(len(certs)))
+    for slot, val in about_slots(resume).items():
+        page = page.replace("{{" + slot + "}}", val)
 
     leftover = re.findall(r"{{\w+}}", page)
     if leftover:

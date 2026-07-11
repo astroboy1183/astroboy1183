@@ -115,12 +115,70 @@ class RenderGuardTest(unittest.TestCase):
             responses[f"repos/astroboy1183/{entry}"] = {
                 "name": entry, "description": "d", "language": "Python"}
         with mock.patch.object(br, "gh", fake_gh(responses)), \
+             mock.patch.object(br, "credly_badges", return_value=[]), \
              mock.patch.object(br, "now_block",
                                return_value="<!--NOW-START-->x<!--NOW-END-->"):
             page = br.build()
         self.assertNotIn("{{", page)
         self.assertIn("Jayanth Appalla", page)
         self.assertIn("GENERATED FILE", page)
+
+
+class CareerDerivationTest(unittest.TestCase):
+    RESUME = {
+        "years_experience": "~3 years",
+        "current": {"company": "trigyan.io", "company_url": "https://trigyan.io",
+                    "role": "data engineer", "focus": "healthcare data"},
+        "work": [
+            {"org": "Trigyan", "role": "Data Engineer", "current": True,
+             "note": "healthcare platform"},
+            {"org": "AWS", "role": "SDE", "note": "DynamoDB"},
+            {"org": "Earlier", "note": "various"},
+        ],
+        "certifications": [
+            {"name": "Databricks Certified Associate Data Engineer", "year": 2025},
+            {"name": "Tableau Certified Desktop Specialist", "year": 2024},
+        ],
+        "credly_user": "someone",
+        "publication": "**Publication:** paper.",
+        "experience_footer": "Full resume on my site.",
+    }
+
+    def test_certs_merge_dedupe_and_sort(self):
+        live = [
+            {"name": "AWS Certified Cloud Practitioner", "year": 2023},
+            {"name": "databricks certified associate data engineer", "year": 2025},  # dup
+        ]
+        with mock.patch.object(br, "credly_badges", return_value=live):
+            certs = br.merged_certifications(self.RESUME)
+        names = [c["name"] for c in certs]
+        self.assertEqual(len(certs), 3)  # dup collapsed
+        self.assertEqual(names[0], "Databricks Certified Associate Data Engineer")
+        self.assertEqual(names[-1], "AWS Certified Cloud Practitioner")  # oldest last
+
+    def test_credly_down_keeps_baseline(self):
+        with mock.patch.object(br, "credly_badges", return_value=[]):
+            certs = br.merged_certifications(self.RESUME)
+        self.assertEqual(len(certs), 2)
+
+    def test_experience_block_shape(self):
+        block = br.experience_block(self.RESUME)
+        self.assertIn("- **Trigyan** — Data Engineer *(current)*: healthcare platform", block)
+        self.assertIn("- **Earlier**: various", block)  # role-less entry
+        self.assertIn("**Publication:** paper.", block)
+        self.assertIn("Full resume on my site.", block)
+
+    def test_about_slots(self):
+        slots = br.about_slots(self.RESUME)
+        self.assertEqual(slots["CURRENT_ROLE"], "data engineer")
+        self.assertIn("trigyan.io", slots["CURRENT_COMPANY_LINK"])
+        self.assertEqual(slots["YEARS"], "~3 years")
+
+    def test_certifications_line_format(self):
+        line = br.certifications_line(
+            [{"name": "A", "year": 2025}, {"name": "B", "year": 2024}])
+        self.assertTrue(line.startswith("**Certifications:** A (2025)"))
+        self.assertIn("B (2024)", line)
 
 
 class NowBlockTest(unittest.TestCase):

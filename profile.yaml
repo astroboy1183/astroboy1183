@@ -2,15 +2,18 @@
 # scripts/build_readme.py merges this with live GitHub data into README.md
 # every morning. Edit THIS file (or template.md), never README.md.
 
+# {{CERT_COUNT}} is derived: resume.yaml certs merged with live Credly badges.
 credibility: >-
   🏢 ex-AWS (DynamoDB) · 🎓 MS CS, University of Illinois Chicago ·
-  📜 4 certifications · 📝 published researcher
+  📜 {{CERT_COUNT}} certifications · 📝 published researcher
 
+# Slots {{CURRENT_ROLE}}/{{CURRENT_COMPANY_LINK}}/{{CURRENT_FOCUS}}/{{YEARS}}
+# are filled from resume.yaml — change jobs there, this prose follows.
 about: |
-  I'm a data engineer at **[trigyan.io](https://trigyan.io)**, building the data
-  platform behind a healthcare product. Before this: **AWS**, on the DynamoDB
+  I'm a {{CURRENT_ROLE}} at {{CURRENT_COMPANY_LINK}}, {{CURRENT_FOCUS}}.
+  Before this: **AWS**, on the DynamoDB
   team — backup/restore and import at multi-TB scale — and Azure
-  Databricks lakehouse work in consulting. ~3 years in industry, MS in
+  Databricks lakehouse work in consulting. {{YEARS}} in industry, MS in
   Computer Science from UIC.
 
   What I like working on: pipelines that move serious data (Spark, Kafka,
@@ -20,30 +23,7 @@ about: |
   what I preach, I built a fleet of {{FLEET_COUNT}} autonomous agents that
   runs my mornings — more below.
 
-certifications: >-
-  **Certifications:** Microsoft Fabric Data Engineer (2025) · Databricks
-  Certified Associate Data Engineer (2025) · Microsoft Certified
-  Administrator Associate (2025) · Tableau Desktop Specialist (2024)
 
-experience: |
-  - **Trigyan** — Data Engineer *(current)*: data platform for a
-    healthcare product
-  - **Amazon Web Services** — SDE, DynamoDB: multi-TB backup/import/restore
-    service; raised the import S3-object limit 10k → 100k, cutting large
-    import times ~20%; on-call for a tier-1 service
-  - **SPV Consulting** — Data Engineer: Azure Databricks pipelines at
-    gigabyte scale (partitioning, Z-ordering, caching), Bronze/Silver/Gold
-    modeling, Power BI delivery
-  - Earlier: ServiceNow ITSM/ITOM integration work; SAP Analytics + Java/Spring
-    microservices at Incture; NLP chatbots intern at Hindustan Unilever
-
-  **Publication:** *"Real-time Object Detection and Face Recognition
-  System to Assist the Visually Impaired"* — Journal of Physics:
-  Conference Series, Vol. 1706 (IOP), 2020 — YOLO + Kafka-streamed video
-  on Android.
-
-  Full resume on [my site](https://jayanthappalla.com) · full history on
-  [LinkedIn](https://www.linkedin.com/in/jayanth-appalla/).
 
 # The projects table is GENERATED: descriptions come from each repo's
 # GitHub description (fallback below if unset), languages from GitHub,

@@ -13,7 +13,7 @@
 &nbsp;
 [![Email](https://img.shields.io/badge/Email-jayanthapalla%40gmail.com-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:jayanthapalla@gmail.com)
 
-🏢 ex-AWS (DynamoDB) · 🎓 MS CS, University of Illinois Chicago · 📜 4 certifications · 📝 published researcher
+🏢 ex-AWS (DynamoDB) · 🎓 MS CS, University of Illinois Chicago · 📜 6 certifications · 📝 published researcher
 
 </div>
 
@@ -21,8 +21,8 @@
 
 ## 👋 About me
 
-I'm a data engineer at **[trigyan.io](https://trigyan.io)**, building the data
-platform behind a healthcare product. Before this: **AWS**, on the DynamoDB
+I'm a data engineer at **[trigyan.io](https://trigyan.io)**, building the data platform behind a healthcare product.
+Before this: **AWS**, on the DynamoDB
 team — backup/restore and import at multi-TB scale — and Azure
 Databricks lakehouse work in consulting. ~3 years in industry, MS in
 Computer Science from UIC.
@@ -34,7 +34,12 @@ where judgment helps, everything tested and observable. To practice
 what I preach, I built a fleet of 11 autonomous agents that
 runs my mornings — more below.
 
-**Certifications:** Microsoft Fabric Data Engineer (2025) · Databricks Certified Associate Data Engineer (2025) · Microsoft Certified Administrator Associate (2025) · Tableau Desktop Specialist (2024)
+**Certifications:** Databricks Certified Associate Data Engineer (2025) ·
+Microsoft Certified Administrator Associate (2025) ·
+Microsoft Certified Fabric Data Engineer (2025) ·
+[PCEP-30-02] PCEP™ – Certified Entry-Level Python Programmer (2025) ·
+Tableau Certified Desktop Specialist (2024) ·
+AWS Certified Cloud Practitioner (2023)
 
 ---
 
@@ -44,9 +49,9 @@ runs my mornings — more below.
 agents, no hands involved.*
 
 <!--NOW-START-->
-⚙️ **185 commits** across 12 repos this week
+⚙️ **207 commits** across 13 repos this week
 
-🚢 last shipped: *"Person-first profile: about, experience, certifications, pub"* in `astroboy1183`
+🚢 last shipped: *"README becomes a build artifact"* in `astroboy1183`
 
 🤖 agent fleet: **8/8 green** yesterday
 
@@ -57,24 +62,14 @@ agents, no hands involved.*
 
 ## 💼 Experience, briefly
 
-- **Trigyan** — Data Engineer *(current)*: data platform for a
-  healthcare product
-- **Amazon Web Services** — SDE, DynamoDB: multi-TB backup/import/restore
-  service; raised the import S3-object limit 10k → 100k, cutting large
-  import times ~20%; on-call for a tier-1 service
-- **SPV Consulting** — Data Engineer: Azure Databricks pipelines at
-  gigabyte scale (partitioning, Z-ordering, caching), Bronze/Silver/Gold
-  modeling, Power BI delivery
-- Earlier: ServiceNow ITSM/ITOM integration work; SAP Analytics + Java/Spring
-  microservices at Incture; NLP chatbots intern at Hindustan Unilever
+- **Trigyan** — Data Engineer *(current)*: data platform for a healthcare product
+- **Amazon Web Services** — SDE, DynamoDB: multi-TB backup/import/restore service; raised the import S3-object limit 10k → 100k, cutting large import times ~20%; on-call for a tier-1 service
+- **SPV Consulting** — Data Engineer: Azure Databricks pipelines at gigabyte scale (partitioning, Z-ordering, caching), Bronze/Silver/Gold modeling, Power BI delivery
+- **Earlier**: ServiceNow ITSM/ITOM integration work; SAP Analytics + Java/Spring microservices at Incture; NLP chatbots intern at Hindustan Unilever
 
-**Publication:** *"Real-time Object Detection and Face Recognition
-System to Assist the Visually Impaired"* — Journal of Physics:
-Conference Series, Vol. 1706 (IOP), 2020 — YOLO + Kafka-streamed video
-on Android.
+**Publication:** *"Real-time Object Detection and Face Recognition System to Assist the Visually Impaired"* — Journal of Physics: Conference Series, Vol. 1706 (IOP), 2020 — YOLO + Kafka-streamed video on Android.
 
-Full resume on [my site](https://jayanthappalla.com) · full history on
-[LinkedIn](https://www.linkedin.com/in/jayanth-appalla/).
+Full resume on [my site](https://jayanthappalla.com) · full history on [LinkedIn](https://www.linkedin.com/in/jayanth-appalla/).
 
 ---
 
