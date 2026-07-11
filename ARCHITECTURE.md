@@ -132,7 +132,6 @@ and does the matching in code:
 
 - Compute the current UTC `hh:mm`.
 - Filter a `SCHEDULE` table for entries due now — respecting
-  weekday for weekly agents (`release-radar` Mon, `papers-digest` Sat).
 - For each match, `POST` to GitHub's
   `…/actions/workflows/<agent>.yml/dispatches` with
   `inputs.source = "scheduler"` (so the workflow's guard can tell a scheduler
@@ -334,8 +333,6 @@ Times are IST. "Brain" = whether the agent calls Claude.
 | news-briefing | 06:00 &amp; 21:00 wrap | 🧠 2× | 7 sections (incl. 🏛 India + 🗽 US politics/immigration) from 41 sources, article-grounded, 👁 watchlist |
 | cricket-scores | 06:00, 13:37 &amp; 21:47 | 🧠 1× | notable matches only — silent otherwise; Sun stats |
 | tech-news | 06:00 &amp; 19:15 wrap | 🧠 2× | flagship: 9 sections from 45 sources, core topics (AI/data/infra/OS/hardware) up to 10 stories deep with ↳ background-context lines + deterministic HN TOP / CISA KEV patch-now, 👁 watchlist |
-| markets-brief | 06:00 | ⚙️ deterministic | Nifty · Sensex · S&amp;P · Nasdaq · USD/INR · gold · BTC |
-| release-radar | Mon 06:00 | 🧠 1× | weekly releases across my dependency stack |
 | study-coach | 06:00 | 🧠 1× | one DSA problem/day, aimed at weak topics |
 | finance-tracker | 06:00 | 🧠 1× | income/expense from bank alerts |
 | papers-digest | Sat 06:00 | 🧠 2× | weekly arXiv, two-stage review of ~1500 papers |
