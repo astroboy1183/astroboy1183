@@ -297,7 +297,7 @@ committed back into their own repo by the workflow **after** the send:
 | Repo | File | Remembers |
 |---|---|---|
 | `repo-review` | `state/` | prior review findings, to follow through |
-| `news-briefing`, `tech-news` | `state/seen.json` | links already surfaced, to dedupe across days |
+| `news-briefing`, `tech-news` | `state/seen.json` (+ news' `briefed.json`, 7d) | links already surfaced, to dedupe across days; what the bullets said, for continuity + Sunday arcs |
 | `study-coach` | `state/served.json` | problems/topics already served |
 | `mail-digest` | `state/noise.json` | learned noise/unsubscribe trends |
 | `eng-blogs` | `data/` | a growing full-text corpus (future RAG) |
@@ -329,9 +329,9 @@ Times are IST. "Brain" = whether the agent calls Claude.
 | Agent | When | Brain | What it delivers |
 |---|---|---|---|
 | weather-report | 06:00 | ⚙️ deterministic | 24-city forecast + AQI, severe-weather watch |
-| mail-digest | 06:07 | 🧠 1× | Gmail → NEEDS ACTION / FYI / NOISE, deep links |
-| news-briefing | 06:00 | 🧠 2× | 5 sections from 30 sources, article-grounded |
-| cricket-scores | 06:17 &amp; 21:47 | 🧠 1× | notable matches only — silent otherwise |
+| mail-digest | 06:07 &amp; 19:00 sweep | 🧠 1× | Gmail → VIP / NEEDS ACTION / CARRIED / deadline ledger, deep links |
+| news-briefing | 06:00 &amp; 21:00 wrap | 🧠 2× | 6 sections (incl. 🏛 politics) from 36 sources, article-grounded, 👁 watchlist |
+| cricket-scores | 06:17, 13:37 &amp; 21:47 | 🧠 1× | notable matches only — silent otherwise; Sun stats |
 | tech-news | 06:59 | 🧠 1× | sectioned tech briefing, HN ranked by points |
 | markets-brief | 07:33 | ⚙️ deterministic | Nifty · Sensex · S&amp;P · Nasdaq · USD/INR · gold · BTC |
 | release-radar | Mon 07:37 | 🧠 1× | weekly releases across my dependency stack |

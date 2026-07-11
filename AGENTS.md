@@ -62,24 +62,27 @@ multi-call. Times are IST.
 - **Key dependencies:** `google-api-python-client`, `google-auth`, `google-auth-oauthlib`, `anthropic`, `requests`, `python-dotenv`.
 
 ### news-briefing
-- **Purpose:** Sends one morning Telegram briefing of India, US and world/geopolitics headlines from RSS feeds, deduped and filtered to what a professional should know.
-- **Schedule (IST):** 06:00 sharp via fleet-scheduler; backup crons 06:00/07:00 (`30 0 * * *` / `30 1 * * *` UTC).
-- **Inputs / data sources:** Seven RSS feeds via `feedparser` — India: The Hindu, Times of India, Hindustan Times, Indian Express, LiveMint; US: NPR, NYT US; World: BBC World, Al Jazeera. Plus the Anthropic API and `state/seen.json`.
+- **Purpose:** Two Telegram editions a day — a full morning briefing (six sections: India, Indian politics, business, Hyderabad incl. Telugu media, US with the India-US corridor always kept, world) and a tight 21:00 evening wrap of only what broke after the morning, article-grounded and personalized by a watchlist.
+- **Schedule (IST):** 06:00 sharp and 21:00 via fleet-scheduler; backup crons 06:00/07:00/21:00/22:00 UTC-shifted (`30 0` / `30 1` / `30 15` / `30 16 * * *`), deduped by a 3-hour guard window.
+- **Inputs / data sources:** 36 verified RSS feeds via `feedparser` (each probed for reachability + freshness before inclusion; ~15 rejects documented in code), the selected stories' own article pages, the Anthropic API, `state/seen.json` + `state/briefed.json`, and the `NEWS_WATCH` secret (comma-separated personal topics).
 - **Pipeline:**
-  1. `load_seen` — load recently-briefed links (`state/seen.json`), pruned to a 3-day window.
-  2. `gather_headlines` — parse each feed, take up to 8 fresh `title | link` lines per feed; skip dead feeds, drop stale entries (24h lookback) and any already-seen link.
-  3. If zero headlines, skip the model and send a one-liner.
-  4. `summarize` — **1 Claude call** (`claude-haiku-4-5`, `max_tokens=4000`): dedupes and filters into fixed sections with hard caps — INDIA (4 bullets), US (3), GEOPOLITICS (3) — each bullet followed by its source link.
-  5. `validate_links` — strip any emitted URL not in the gathered source set.
-  6. `send_telegram`, then record all gathered links as seen (after the send).
-- **LLM role:** 🧠 1 Claude call — the model decides which headlines matter, dedupes overlapping coverage, drops clickbait, and picks the best source link per story; freshness/seen filtering and link validation are deterministic.
-- **State / memory:** `state/seen.json` — `{link: 'YYYY-MM-DD'}` of candidates shown to the model, kept 3 days and committed back by the workflow, so a lingering story is briefed exactly once (even stories the model chose to skip).
-- **Output format:** Header (date + count of fresh headlines scanned), then 📰 INDIA / 🇺🇸 US / 🌍 GEOPOLITICS sections with capped bullets and per-bullet links. A section whose feeds all failed renders as a single "unavailable" line; if every feed is unreachable it sends "Quiet day: nothing new since yesterday's briefing ☕".
+  1. `edition` — morning (full caps, 24h lookback) or evening (tight caps, 16h) by IST hour; a quiet evening stays silent.
+  2. `gather_headlines` — up to 6 fresh entries per feed; dead feeds skipped, stale and already-seen links dropped; watchlist matches 👁-flagged deterministically.
+  3. `select_stories` — **Claude call 1** (haiku): picks story indices per section under editorial rules (one story one section, outlet variety, corroboration = importance, politics = governance substance, skip cinema filler); skipped 👁 stories are forced back in by code.
+  4. `fetch_article` — full boilerplate-stripped text (3k chars) for just the selected stories.
+  5. `write_briefing` — **Claude call 2** (sonnet): 2-3 substantive sentences per bullet from real article text, Telugu sources rendered in English, plus a state tail naming each bullet's story key and the Top story's link.
+  6. `validate_links` — strip any URL (incl. the top link) not in the gathered set; `fetch_og_image` + `send_photo` then send the Top story as a captioned photo front page (best-effort).
+  7. Sunday mornings: `week_in_review` — **Claude call 3** traces the week's story arcs from the 7-day briefed memory.
+  8. `send_telegram`, then record seen links and briefed keys (after the send).
+- **LLM role:** 🧠 2 Claude calls (3 on Sundays) — cheap model selects, strong model writes from fetched articles; freshness, seen-dedupe, watchlist enforcement and link validation are deterministic.
+- **State / memory:** `state/seen.json` (3 days — briefed once, and the evening wrap is new-only by construction) and `state/briefed.json` (7 days of what the bullets said — developments framed as developments, Sunday arcs), both committed back by the workflow.
+- **Output format:** Header (edition + candidate/feed counts), photo front page when the Top story carries an og:image, 🗞 Top line, then 📰 INDIA / 🏛 POLITICS / 💼 BUSINESS / 📍 HYDERABAD / 🇺🇸 US / 🌍 WORLD bullets (👁-prefixed for watchlist hits), each with its validated source link; 🗓 THE WEEK on Sundays.
 - **Notable design decisions:**
-  - Three layers of feed defense: per-feed try/except, `.get()` on entries, and freshness filtering.
-  - Seen-links memory guarantees once-only briefing across days; anything shown to the model counts as seen.
-  - Hallucinated links replaced with `[link removed: not in source feeds]` (covered by an offline test).
-  - Tech and cricket deliberately excluded — handled by separate agents.
+  - Two-stage select/fetch/write: bullets carry numbers, names and consequences because they're written from articles, not headlines.
+  - The watchlist guarantee is code-enforced (same pattern as mail-digest's VIP block), not just prompted.
+  - The evening wrap exists because India's news cycle happens 9:00–21:00; the seen-memory makes it non-overlapping by construction.
+  - Hallucinated links replaced with `[link removed: not in source feeds]`; the photo and week blocks are enrichments that can never sink the briefing.
+  - Tech and cricket deliberately excluded — handled by separate agents; US politics lives in the US section, 🏛 POLITICS is Indian politics.
 - **Key dependencies:** `feedparser`, `anthropic`, `requests`, `python-dotenv`.
 
 ### cricket-scores
