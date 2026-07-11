@@ -8,6 +8,13 @@ on:
   schedule:
     - cron: '45 0 * * *'   # 06:15 IST
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:                   # a merged resume PR rebuilds immediately
+      - resume.yaml
+      - profile.yaml
+      - template.md
+      - scripts/**
 
 permissions:
   contents: write
