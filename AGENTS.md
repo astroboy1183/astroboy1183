@@ -179,7 +179,7 @@ multi-call. Times are IST.
 
 ### repo-audit
 - **Purpose:** The on-demand account X-ray — press a button and every repo (~67, forks and archived included) gets triaged and the active ones deep-read, producing a report card each (score /10, blunt verdict, top 3 actions, tagged findings), a published dashboard, and a Telegram summary of what to act on first.
-- **Schedule (IST):** none — `workflow_dispatch` only (GitHub's "Run workflow" button / `gh workflow run audit.yml`); the fleet's first on-demand member: no cron, no scheduler entry, no watchdog line.
+- **Schedule (IST):** none — on-demand via its one-button UI (repo-audit-ui.jayanthapalla.workers.dev: passphrase-gated run, live status, embedded dashboard) or workflow_dispatch/CLI; the fleet's first on-demand member: no cron, no scheduler entry, no watchdog line.
 - **Inputs / data sources:** GitHub API via `REPOS_READ_TOKEN` (repo list, git trees, raw file contents, head SHAs) and the Anthropic API. Optional run inputs: `model` (default sonnet) and `limit` (first N repos, for testing).
 - **Pipeline:**
   1. Phase 1, deterministic triage of every repo: hygiene /7 (README, description, license, tests, CI, .gitignore, topics), language, size, last-push age, open issues. Forks/archived stop here.
