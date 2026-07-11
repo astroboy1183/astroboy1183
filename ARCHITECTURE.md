@@ -332,14 +332,14 @@ Times are IST. "Brain" = whether the agent calls Claude.
 | mail-digest | 06:07 &amp; 19:00 sweep | 🧠 1× | Gmail → VIP / NEEDS ACTION / CARRIED / deadline ledger, deep links |
 | news-briefing | 06:00 &amp; 21:00 wrap | 🧠 2× | 7 sections (incl. 🏛 India + 🗽 US politics/immigration) from 41 sources, article-grounded, 👁 watchlist |
 | cricket-scores | 06:17, 13:37 &amp; 21:47 | 🧠 1× | notable matches only — silent otherwise; Sun stats |
-| tech-news | 06:59 &amp; 19:15 wrap | 🧠 2× | flagship: 9 sections (AI, data, infra, OS…) from 45 sources with ↳ background-context lines + deterministic HN TOP / CISA KEV patch-now / rising repos, 👁 watchlist |
+| tech-news | 06:59 &amp; 19:15 wrap | 🧠 2× | flagship: 9 sections from 45 sources, core topics (AI/data/infra/OS/hardware) up to 10 stories deep with ↳ background-context lines + deterministic HN TOP / CISA KEV patch-now, 👁 watchlist |
 | markets-brief | 07:33 | ⚙️ deterministic | Nifty · Sensex · S&amp;P · Nasdaq · USD/INR · gold · BTC |
 | release-radar | Mon 07:37 | 🧠 1× | weekly releases across my dependency stack |
 | study-coach | 08:07 | 🧠 1× | one DSA problem/day, aimed at weak topics |
 | finance-tracker | 08:31 | 🧠 1× | income/expense from bank alerts |
 | papers-digest | Sat 09:07 | 🧠 2× | weekly arXiv, two-stage review of ~1500 papers |
 | eng-blogs | 19:07 | 🧠 1× | 18 engineering blogs + growing corpus |
-| repo-review | 19:37 | 🧠 2× | reviews every diff I push, remembers findings |
+| repo-review | 19:37 | 🧠 2× | reviews every diff I push, remembers findings; 📈 rising repos |
 | housekeeper | 21:30 *(local)* | 🧠 1× | laptop health: disk, failed units, battery |
 | daily-review | 22:15 *(local)* | 🧠 1× | day review + fleet watchdog |
 
