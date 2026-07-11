@@ -193,7 +193,8 @@ multi-call. Times are IST.
 ### finance-tracker
 - **Purpose:** Reads bank/UPI/card transaction notification emails from Gmail and reports money movement (in/out/net, categories, alerts) to Telegram on daily/weekly/monthly cadences.
 - **Status:** ⚠️ Deployed but **blocked on Telegram bot creation** — `TELEGRAM_BOT_TOKEN`/`TELEGRAM_CHAT_ID` for `@jayanth_finance_bot` still need to be set via @BotFather before it can go live.
-- **Schedule (IST):** Daily 06:00 IST (`30 0 * * *` UTC); backup 07:00 with dedupe guard. Extra sections trigger on Mondays (weekly), the 15th (budget pace, if `BUDGETS` set), and the 1st (monthly rollup).
+- **Schedule (IST):** Daily 06:00 IST (`30 0 * * *` UTC); backup 07:00 with dedupe guard. Extra sections trigger on Mondays (weekly + projection + expected subscriptions), the 15th (budget pace + projection, if `BUDGETS` set), and the 1st (monthly rollup + savings rate + 3-month category averages + detected subscriptions).
+- **State / memory:** `state/ledger.json` — a year of transactions keyed by calendar day, committed back by the workflow. Daily runs record; weekly/monthly reports compute FROM the ledger (Gmail backfill for gap days); it powers the 🆕 first-time-payee flags, ⚠ duplicate-charge notes and the deterministic subscription detector (cadence 24–38d, amounts ±15%).
 - **Inputs / data sources:** Gmail API (read-only OAuth via `token.json`/`credentials.json`, shared with mail-digest). Query built from optional `TXN_SENDERS` secret (sender fragments) or a broad `TXN_KEYWORDS` fallback. Config from env/secrets: `TXN_SENDERS`, `BUDGETS`, `LARGE_TXN_THRESHOLD`. Deterministic `MERCHANT_MAP` and `CATEGORIES` in code.
 - **Pipeline:**
   1. Authenticate Gmail; compute calendar-aligned IST windows (daily always; weekly on Mon; month-to-date on 15th; monthly + prior month on 1st).
