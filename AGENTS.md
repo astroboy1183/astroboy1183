@@ -106,7 +106,7 @@ multi-call. Times are IST.
 ### tech-news
 - **Purpose:** The fleet's flagship — two Telegram editions a day covering the full tech landscape in nine sections (AI with primary sources, data engineering/science/analytics, cloud & infra, operating systems (Windows/Linux/macOS), software & dev, hardware, industry, India tech, security), every bullet carrying a '↳' background-context line plus deterministic blocks: HN TOP (the community's actual front page), PATCH NOW (CISA's actively-exploited CVE catalog) and a Saturday WEEK IN TECH; the five core topics run up to 10 stories deep.
 - **Schedule (IST):** 06:00 full briefing and 19:15 evening wrap via fleet-scheduler; backup crons 07:00/20:15; 3-hour dedupe guard window pairs each backup with its own edition.
-- **Inputs / data sources:** 45 verified RSS feeds (probed for reachability + freshness; rejects documented in code — data-vendor engineering blogs deliberately left to the eng-blogs agent), plus three structured APIs: HN Algolia (top stories + points/comments enrichment, one call for both), CISA Known Exploited Vulnerabilities JSON, GitHub-adjacent extras live elsewhere (rising repos moved to repo-review). The `TECH_WATCH` secret carries a personal watchlist. State: `seen.json`, `briefed.json`, `extras.json`.
+- **Inputs / data sources:** 45 verified RSS feeds (probed for reachability + freshness; rejects documented in code — data-vendor engineering blogs deliberately left to the eng-blogs agent), plus three structured APIs: HN Algolia (top stories + points/comments enrichment, one call for both), and the CISA Known Exploited Vulnerabilities JSON. The `TECH_WATCH` secret carries a personal watchlist. State: `seen.json`, `briefed.json`, `extras.json`.
 - **Pipeline:**
   1. `edition()` — morning (full caps, 24h lookback) or evening (tight caps, 14h); a quiet evening is silent unless a new exploited CVE fires.
   2. `hn_window()` — one Algolia call: 🔥 HN TOP (top-5 by points, 100-point floor) + a title→(points, comments) map enriching HN entries in the dev section.
@@ -117,7 +117,7 @@ multi-call. Times are IST.
   7. `validate_links()`, then deterministic blocks appended (their URLs are code-fetched).
   8. Saturday: `week_in_review()` — **Claude call 3** traces the week's arcs from the briefed memory.
   9. Photo front page (Top story og:image via `sendPhoto`, best-effort), `send_telegram`, then state saves.
-- **LLM role:** 🧠 2 Claude calls (3 on Saturdays) — select + write; HN TOP, PATCH NOW, RISING REPOS and the watchlist guarantee are fully deterministic.
+- **LLM role:** 🧠 2 Claude calls (3 on Saturdays) — select + write; HN TOP, PATCH NOW and the watchlist guarantee are fully deterministic.
 - **State / memory:** `seen.json` (3d — briefed once, evening wrap new-only by construction), `briefed.json` (7d — developments framed as developments, Saturday arcs), `extras.json` (KEV CVEs 90d, so the tripwire never repeats).
 - **Output format:** Header (edition + candidate/feed counts), photo front page, 🗞 Top line, nine emoji sections (each bullet: facts + ↳ context + link) (👁-prefixed watchlist bullets, validated links), then 🔥 HN TOP / 🚨 PATCH NOW / 🗓 WEEK IN TECH as they apply.
 - **Notable design decisions:**
@@ -261,7 +261,7 @@ multi-call. Times are IST.
 - **Key dependencies:** `feedparser`, `requests`, `python-dotenv`, `anthropic`.
 
 ### repo-review
-- **Purpose:** Every evening it reviews the last 24h of pushes across all of the owner's GitHub repos and delivers a tagged code review, a rotating deep-dive spotlight, and (weekly) portfolio advice to Telegram.
+- **Purpose:** Every evening it reviews the last 24h of pushes across all of the owner's GitHub repos and delivers a tagged code review, a rotating deep-dive spotlight, and (weekly) portfolio advice to Telegram. Deterministic blocks ride along: 🏅 hygiene score /7 and 📌 TODO/FIXME debt markers on the spotlight, 🔴 CI HEALTH for repos whose latest Actions run failed, Sunday 🗓 WEEK IN CODE (activity memory + open-PR sweep), and 📈 RISING REPOS (new repos crossing ★300 this week, shown once ever).
 - **Schedule (IST):** 06:00 primary, 07:00 backup (`30 0 * * *` UTC) with a dedupe guard.
 - **Inputs / data sources:** GitHub REST API via `REPOS_READ_TOKEN` (read-only PAT) — `/user/repos` (owner, non-fork, non-archived), per-repo `/commits`, the compare/commit diff endpoints (raw `application/vnd.github.diff`), recursive git tree + raw file contents for the spotlight; `state/findings.json` for memory.
 - **Pipeline:**
