@@ -151,29 +151,14 @@ multi-call. Times are IST.
 - **Key dependencies:** `google-api-python-client`, `google-auth`, `google-auth-oauthlib`, `requests`, `python-dotenv`, `anthropic`.
 
 ### papers-digest
-- **Purpose:** Every Saturday morning, deliver one Telegram message with the week's 6-8 most relevant AI/data-engineering arXiv papers, each with a title, two-sentence takeaway, and link.
-- **Schedule (IST):** Saturday 06:00 IST — dispatched on the minute; guarded GitHub cron backup an hour later (`30 1 * * 6` UTC = 07:00 IST).
-- **Inputs / data sources:** arXiv Atom API (`export.arxiv.org/api/query`), categories `cs.LG`, `cs.CL`, `cs.AI`, `cs.DB`, over a 7-day lookback window.
-- **Pipeline:**
-  1. **Fetch** — `fetch_recent()` paginates each category newest-first in pages of 100, stopping when an entry predates the 7-day cutoff or the feed empties, hard-capped at 12 pages (≤1200 entries/category), with a 3s pause between pages.
-  2. **Down-sample** — each category's pool is trimmed to `MAX_PER_CATEGORY` (150) *evenly across the week* so ML categories don't crowd out cs.DB and the total fits model context (a busy week is ~1500 papers).
-  3. **Dedupe** — `main()` merges categories, dropping cross-listed duplicates by title; per-category `try/except` collects failures.
-  4. **Stage 1 skim (LLM)** — `shortlist()` chunks candidates (150/chunk), showing the cheap model each paper's category + title + 200-char snippet; it returns JSON indices of up to 12 keeps per chunk, recall-biased (unparseable reply keeps the whole chunk). Skipped if the pool is already ≤12; an empty result falls back to the full pool.
-  5. **Stage 2 rank (LLM)** — the survivors' full 600-char abstracts go to the stronger model, which picks and ranks 6-8, balancing across topics, formatting title + 2 sentences + link.
-  6. **Deliver** — silent if <3 papers and no fetch failures; if thinness is due to fetch failures, it raises to trigger the workflow's loud alert. Otherwise sends.
-- **LLM role:** 🧠🧠 Two stages, N+1 calls. Stage 1 = one call per chunk (cheap model, `PAPERS_MODEL_FILTER`, default `claude-haiku-4-5`) deciding which papers are worth reading in full. Stage 2 = one call (strong model, `PAPERS_MODEL_RANK`, default `claude-sonnet-5`) deciding the final ranked 6-8 and writing the prose.
-- **State / memory:** none — each week is computed fresh from the 7-day arXiv window.
-- **Output format:** Header `📄 Papers digest — week ending <DD Mon YYYY>` plus a scanned/read-in-full count, then the model's ranked plain-text list (title line, 2 terse sentences, link on its own line); a `⚠️ Could not check:` footer lists failed categories.
-- **Notable design decisions:**
-  - Weekly not daily — daily arXiv is noise; large volume in, 6-8 out.
-  - Two-tier model split for cost — one model can't judge ~600 abstracts, so a cheap skim feeds a strong re-rank "for pennies."
-  - Recall-biased stage 1 and full-pool fallbacks — never silently drop a chunk or go empty from a broken filter.
-  - Silence over filler on a genuinely quiet week, but loud failure when fetches break.
-- **Key dependencies:** `feedparser`, `requests`, `python-dotenv`, `anthropic`.
-
----
-
-## 🌆 Evening cloud agents
+- **Purpose:** Weekly Saturday digest of the most relevant arXiv papers for a data & AI engineer — 10-12 picks from ~2,500 weekly submissions across seven categories, grouped under 🤖 AI & LLM / 👁 VISION / 🗄 DATA & SYSTEMS / 🔧 HARDWARE, each with two sentences + link, plus a 📌 SPOTLIGHT deep-dive on the week's #1 read from arXiv's HTML full text.
+- **Schedule (IST):** Saturday 06:00 — dispatched on the minute; guarded GitHub cron backup an hour later (`30 1 * * 6` UTC).
+- **Inputs / data sources:** arXiv Atom API (cs.LG, cs.CL, cs.AI, cs.CV, cs.DB, cs.DC, cs.AR — paginated to the 7-day cutoff, down-sampled evenly to 150/category), Hugging Face daily-papers API (community upvotes, merged deterministically: 🔥 flags + force-inclusion past the skim), the `PAPERS_INTERESTS` secret, `state/served.json`.
+- **Pipeline:** fetch 7 categories → merge HF upvotes → **Claude call 1** (haiku) skims everything in chunks of 150 (recall-biased; unparseable chunk kept whole; 🔥 papers force-included) → **Claude call 2** (sonnet) reads full abstracts, writes the sectioned digest + a state tail of picked ids → link validator (URLs must be ones we handed the model) → **Claude call 3** SPOTLIGHT on the #1 pick from its HTML full text → send → served ids saved (90d, so revised resubmissions never repeat).
+- **LLM role:** 🧠 2-3 calls — skim, rank/write, spotlight; pagination, down-sampling, HF signal, dedupe and link validation are deterministic.
+- **State / memory:** `state/served.json` (picked arxiv ids, 90-day window), committed back by the workflow.
+- **Notable design decisions:** weekly on purpose (daily arXiv is noise); section balance enforced so high-volume ML categories can't crowd out vision/data/hardware; the HF community signal can add papers but never remove them.
+- **Key dependencies:** `feedparser`, `requests`, `anthropic`, `python-dotenv`.
 
 ### eng-blogs
 - **Purpose:** My daily engineering reading list — the 10 best unread posts across 38 verified blogs (companies + the individuals every good engineer reads), ranked against my interests, each with a specific blurb, a deterministic read-time and its link. A post is served exactly once, ever.

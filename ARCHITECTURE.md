@@ -333,7 +333,7 @@ Times are IST. "Brain" = whether the agent calls Claude.
 | cricket-scores | 06:00, 13:37 &amp; 21:47 | 🧠 1× | notable matches only — silent otherwise; Sun stats |
 | tech-news | 06:00 &amp; 19:15 wrap | 🧠 2× | flagship: 9 sections from 45 sources, core topics (AI/data/infra/OS/hardware) up to 10 stories deep with ↳ background-context lines + deterministic HN TOP / CISA KEV patch-now, 👁 watchlist |
 | finance-tracker | 06:00 | 🧠 1× | income/expense from bank alerts |
-| papers-digest | Sat 06:00 | 🧠 2× | weekly arXiv, two-stage review of ~1500 papers |
+| papers-digest | Sat 06:00 | 🧠 2-3× | weekly arXiv: 7 categories (~2,500 papers) → 4 interest sections + HF-trending signal + 📌 spotlight |
 | eng-blogs | 06:00 | 🧠 2× | daily top-10 reading list from 38 blogs, interest-ranked, never repeats + growing RAG corpus |
 | repo-review | 06:00 | 🧠 2× | reviews every diff I push, remembers findings; 📈 rising repos |
 | housekeeper | 06:00 *(local)* | 🧠 1× | laptop health: disk, failed units, battery |
