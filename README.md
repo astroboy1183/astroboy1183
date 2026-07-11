@@ -49,7 +49,7 @@ AWS Certified Cloud Practitioner (2023)
 agents, no hands involved.*
 
 <!--NOW-START-->
-⚙️ **221 commits** across 14 repos this week
+⚙️ **196 commits** across 12 repos this week
 
 🚢 last shipped: *"Fleet blurb reflects on-demand scaling; count stays derived"* in `astroboy1183`
 
