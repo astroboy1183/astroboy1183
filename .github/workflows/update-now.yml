@@ -1,7 +1,9 @@
-name: Update Now section
+name: Build README
 
-# Refreshes the self-updating 🔄 Now block in the profile README with
-# yesterday's facts — runs after the agent fleet's 06:00 IST wave.
+# The README is a build artifact: profile.yaml (facts) + template.md
+# (skeleton) + live GitHub data, rebuilt every morning after the agent
+# fleet's 06:00 IST wave. If any structural section can't build, the
+# script aborts and yesterday's README stays — stale beats wrong.
 on:
   schedule:
     - cron: '45 0 * * *'   # 06:15 IST
@@ -11,16 +13,19 @@ permissions:
   contents: write
 
 jobs:
-  update:
+  build:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v5
 
-      - name: Rebuild the Now block
+      - name: Install PyYAML
+        run: pip install pyyaml
+
+      - name: Rebuild README
         env:
           GH_TOKEN: ${{ github.token }}
-        run: python3 scripts/update_now.py
+        run: python3 scripts/build_readme.py
 
       - name: Commit if changed
         run: |
@@ -28,7 +33,7 @@ jobs:
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add README.md
-            git commit -m "Now: daily refresh"
+            git commit -m "README: daily rebuild"
             git pull --rebase -q origin main || true
             git push
           fi

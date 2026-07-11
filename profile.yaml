@@ -1,0 +1,98 @@
+# The curated half of my profile — the facts only a human should edit.
+# scripts/build_readme.py merges this with live GitHub data into README.md
+# every morning. Edit THIS file (or template.md), never README.md.
+
+credibility: >-
+  🏢 ex-AWS (DynamoDB) · 🎓 MS CS, University of Illinois Chicago ·
+  📜 4 certifications · 📝 published researcher
+
+about: |
+  I'm a data engineer at **[trigyan.io](https://trigyan.io)**, building the data
+  platform behind a healthcare product. Before this: **AWS**, on the DynamoDB
+  team — backup/restore and import at multi-TB scale — and Azure
+  Databricks lakehouse work in consulting. ~3 years in industry, MS in
+  Computer Science from UIC.
+
+  What I like working on: pipelines that move serious data (Spark, Kafka,
+  Databricks, medallion architectures), and **LLM systems with real
+  engineering discipline** — deterministic where possible, model calls only
+  where judgment helps, everything tested and observable. To practice
+  what I preach, I built a fleet of {{FLEET_COUNT}} autonomous agents that
+  runs my mornings — more below.
+
+certifications: >-
+  **Certifications:** Microsoft Fabric Data Engineer (2025) · Databricks
+  Certified Associate Data Engineer (2025) · Microsoft Certified
+  Administrator Associate (2025) · Tableau Desktop Specialist (2024)
+
+experience: |
+  - **Trigyan** — Data Engineer *(current)*: data platform for a
+    healthcare product
+  - **Amazon Web Services** — SDE, DynamoDB: multi-TB backup/import/restore
+    service; raised the import S3-object limit 10k → 100k, cutting large
+    import times ~20%; on-call for a tier-1 service
+  - **SPV Consulting** — Data Engineer: Azure Databricks pipelines at
+    gigabyte scale (partitioning, Z-ordering, caching), Bronze/Silver/Gold
+    modeling, Power BI delivery
+  - Earlier: ServiceNow ITSM/ITOM integration work; SAP Analytics + Java/Spring
+    microservices at Incture; NLP chatbots intern at Hindustan Unilever
+
+  **Publication:** *"Real-time Object Detection and Face Recognition
+  System to Assist the Visually Impaired"* — Journal of Physics:
+  Conference Series, Vol. 1706 (IOP), 2020 — YOLO + Kafka-streamed video
+  on Android.
+
+  Full resume on [my site](https://jayanthappalla.com) · full history on
+  [LinkedIn](https://www.linkedin.com/in/jayanth-appalla/).
+
+# The projects table is GENERATED: descriptions come from each repo's
+# GitHub description (fallback below if unset), languages from GitHub,
+# ordering from my repo-audit agent's latest scores (best first).
+projects:
+  - repo: news-intelligence-platform
+    fallback: Async FastAPI backend for news aggregation and querying
+  - repo: election-dashboard
+    fallback: Election-results dashboard with real data modeling and caching
+  - repo: DocMind
+    fallback: RAG document Q&A — parse, embed, ask
+  - repo: ipl-intelligence-platform
+    fallback: IPL cricket analytics API
+  - repo: SmartDay-App
+    fallback: Day-planner mobile app — Expo + SQLite
+  - repo: Quiz-App
+    fallback: Quiz backend with async plumbing, auth and migrations
+  - repo: sentiment-analysis
+    fallback: Sentiment-analysis baseline with a real test suite
+
+currently_building: >-
+  **Currently building:** a fleet telemetry lakehouse (dbt + DuckDB over
+  my agents' run history) · RAG with real evals over a daily-growing
+  engineering-blog corpus · a Kafka → Spark Structured Streaming pipeline.
+
+fleet: |
+  {{FLEET_COUNT}} autonomous agents — each its own repo, schedule, Telegram
+  bot and memory — deliver my mornings at 06:00 IST sharp: weather, mail
+  triage, 7-section news, a 9-section tech briefing, my own money
+  movement, a code review of everything I pushed yesterday, a top-10
+  reading list. Zero servers: a Cloudflare Worker dispatches GitHub
+  Actions at exact minutes (~6s, after GitHub's own cron once ran 4 hours
+  late), state is committed back after every run, and a watchdog notices
+  any agent that silently dies.
+
+  **The engineering story → [ARCHITECTURE.md](ARCHITECTURE.md)** ·
+  **every agent in detail → [AGENTS.md](AGENTS.md)**
+
+learning: >-
+  Daily DSA practice
+  ([Data-Structures-and-Algorithms](https://github.com/astroboy1183/Data-Structures-and-Algorithms),
+  [Leetcode-Problems](https://github.com/astroboy1183/Leetcode-Problems)) ·
+  Python for AI engineering
+  ([code](https://github.com/astroboy1183/Python-AI),
+  [notes](https://github.com/astroboy1183/Python-AI-Notes)) ·
+  tooling notes ([study-notes](https://github.com/astroboy1183/study-notes))
+
+# Agents that don't appear in the fleet-scheduler SCHEDULE (the count is
+# derived: unique scheduled repos + these).
+unscheduled_agents:
+  - housekeeper   # local systemd
+  - repo-audit    # on-demand button-press

@@ -1,3 +1,6 @@
+<!-- GENERATED FILE — do not edit directly.
+     Facts live in profile.yaml, the skeleton in template.md;
+     scripts/build_readme.py rebuilds this every morning. -->
 <div align="center">
 
 # Jayanth Appalla
@@ -28,12 +31,10 @@ What I like working on: pipelines that move serious data (Spark, Kafka,
 Databricks, medallion architectures), and **LLM systems with real
 engineering discipline** — deterministic where possible, model calls only
 where judgment helps, everything tested and observable. To practice
-what I preach, I built a fleet of 12 autonomous agents that runs my
-mornings — more below.
+what I preach, I built a fleet of 11 autonomous agents that
+runs my mornings — more below.
 
-**Certifications:** Microsoft Fabric Data Engineer (2025) · Databricks
-Certified Associate Data Engineer (2025) · Microsoft Certified
-Administrator Associate (2025) · Tableau Desktop Specialist (2024)
+**Certifications:** Microsoft Fabric Data Engineer (2025) · Databricks Certified Associate Data Engineer (2025) · Microsoft Certified Administrator Associate (2025) · Tableau Desktop Specialist (2024)
 
 ---
 
@@ -43,9 +44,9 @@ Administrator Associate (2025) · Tableau Desktop Specialist (2024)
 agents, no hands involved.*
 
 <!--NOW-START-->
-⚙️ **205 commits** across 13 repos this week
+⚙️ **206 commits** across 13 repos this week
 
-🚢 last shipped: *"Profile revamp: visitor reading paths, honest project table,"* in `astroboy1183`
+🚢 last shipped: *"Person-first profile: about, experience, certifications, pub"* in `astroboy1183`
 
 🤖 agent fleet: **8/8 green** yesterday
 
@@ -83,28 +84,26 @@ Full resume on [my site](https://jayanthappalla.com) · full history on
 |---|---|
 | [news-intelligence-platform](https://github.com/astroboy1183/news-intelligence-platform) | Async FastAPI backend for news aggregation and querying (Python) |
 | [election-dashboard](https://github.com/astroboy1183/election-dashboard) | Election-results dashboard with real data modeling and caching (TypeScript) |
-| [DocMind](https://github.com/astroboy1183/DocMind) | RAG document Q&A — parse, embed, ask (Python) |
-| [ipl-intelligence-platform](https://github.com/astroboy1183/ipl-intelligence-platform) | IPL cricket analytics API (TypeScript) |
 | [SmartDay-App](https://github.com/astroboy1183/SmartDay-App) | Day-planner mobile app — Expo + SQLite (TypeScript) |
 | [Quiz-App](https://github.com/astroboy1183/Quiz-App) | Quiz backend with async plumbing, auth and migrations (Python) |
 | [sentiment-analysis](https://github.com/astroboy1183/sentiment-analysis) | Sentiment-analysis baseline with a real test suite (Python) |
+| [DocMind](https://github.com/astroboy1183/DocMind) | RAG document Q&A — parse, embed, ask (Python) |
+| [ipl-intelligence-platform](https://github.com/astroboy1183/ipl-intelligence-platform) | IPL cricket analytics API (TypeScript) |
 
-**Currently building:** a fleet telemetry lakehouse (dbt + DuckDB over
-my agents' run history) · RAG with real evals over a daily-growing
-engineering-blog corpus · a Kafka → Spark Structured Streaming pipeline.
+**Currently building:** a fleet telemetry lakehouse (dbt + DuckDB over my agents' run history) · RAG with real evals over a daily-growing engineering-blog corpus · a Kafka → Spark Structured Streaming pipeline.
 
 ---
 
 ## 🤖 The agent fleet (the side project that runs my life)
 
-Twelve autonomous agents — each its own repo, schedule, Telegram bot and
-memory — deliver my mornings at 06:00 IST sharp: weather, mail triage,
-7-section news, a 9-section tech briefing, my own money movement, a
-code review of everything I pushed yesterday, a top-10 reading list.
-Zero servers: a Cloudflare Worker dispatches GitHub Actions at exact
-minutes (~6s, after GitHub's own cron once ran 4 hours late), state is
-committed back after every run, and a watchdog notices any agent that
-silently dies.
+11 autonomous agents — each its own repo, schedule, Telegram
+bot and memory — deliver my mornings at 06:00 IST sharp: weather, mail
+triage, 7-section news, a 9-section tech briefing, my own money
+movement, a code review of everything I pushed yesterday, a top-10
+reading list. Zero servers: a Cloudflare Worker dispatches GitHub
+Actions at exact minutes (~6s, after GitHub's own cron once ran 4 hours
+late), state is committed back after every run, and a watchdog notices
+any agent that silently dies.
 
 **The engineering story → [ARCHITECTURE.md](ARCHITECTURE.md)** ·
 **every agent in detail → [AGENTS.md](AGENTS.md)**
@@ -149,13 +148,7 @@ silently dies.
 
 ## 📚 Learning in public
 
-Daily DSA practice
-([Data-Structures-and-Algorithms](https://github.com/astroboy1183/Data-Structures-and-Algorithms),
-[Leetcode-Problems](https://github.com/astroboy1183/Leetcode-Problems)) ·
-Python for AI engineering
-([code](https://github.com/astroboy1183/Python-AI),
-[notes](https://github.com/astroboy1183/Python-AI-Notes)) ·
-tooling notes ([study-notes](https://github.com/astroboy1183/study-notes))
+Daily DSA practice ([Data-Structures-and-Algorithms](https://github.com/astroboy1183/Data-Structures-and-Algorithms), [Leetcode-Problems](https://github.com/astroboy1183/Leetcode-Problems)) · Python for AI engineering ([code](https://github.com/astroboy1183/Python-AI), [notes](https://github.com/astroboy1183/Python-AI-Notes)) · tooling notes ([study-notes](https://github.com/astroboy1183/study-notes))
 
 ---
 
