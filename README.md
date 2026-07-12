@@ -49,13 +49,13 @@ AWS Certified Cloud Practitioner (2023)
 agents, no hands involved.*
 
 <!--NOW-START-->
-⚙️ **196 commits** across 12 repos this week
+⚙️ **191 commits** across 12 repos this week
 
-🚢 last shipped: *"Fleet blurb reflects on-demand scaling; count stays derived"* in `astroboy1183`
+🚢 last shipped: *"style all sections as terminal windows with typed commands"* in `astroboy1183.github.io`
 
-🤖 agent fleet: **8/8 green** yesterday
+🤖 agent fleet: **6/8 green** yesterday
 
-<sub>last updated 11 Jul 2026 — automatically</sub>
+<sub>last updated 12 Jul 2026 — automatically</sub>
 <!--NOW-END-->
 
 ---
