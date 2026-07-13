@@ -53,9 +53,9 @@ agents, no hands involved.*
 
 🚢 last shipped: *"style all sections as terminal windows with typed commands"* in `astroboy1183.github.io`
 
-🤖 agent fleet: **6/8 green** yesterday
+🤖 agent fleet: **1/8 green** yesterday
 
-<sub>last updated 12 Jul 2026 — automatically</sub>
+<sub>last updated 13 Jul 2026 — automatically</sub>
 <!--NOW-END-->
 
 ---
