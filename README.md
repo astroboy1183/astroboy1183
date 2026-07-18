@@ -49,13 +49,13 @@ AWS Certified Cloud Practitioner (2023)
 agents, no hands involved.*
 
 <!--NOW-START-->
-⚙️ **106 commits** across 12 repos this week
+⚙️ **84 commits** across 12 repos this week
 
 🚢 last shipped: *"style all sections as terminal windows with typed commands"* in `astroboy1183.github.io`
 
 🤖 agent fleet: **1/8 green** yesterday
 
-<sub>last updated 17 Jul 2026 — automatically</sub>
+<sub>last updated 18 Jul 2026 — automatically</sub>
 <!--NOW-END-->
 
 ---
