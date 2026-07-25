@@ -49,13 +49,13 @@ AWS Certified Cloud Practitioner (2023)
 agents, no hands involved.*
 
 <!--NOW-START-->
-⚙️ **7 commits** across 2 repos this week
+⚙️ **8 commits** across 2 repos this week
 
-🚢 last shipped: *"Add README: intro to my learning notes + daily progress"* in `Jayanth-Vault`
+🚢 last shipped: *"Move the study bot to Cloudflare; restore README progress + "* in `study-agent`
 
 🤖 agent fleet: **0/8 green** yesterday
 
-<sub>last updated 24 Jul 2026 — automatically</sub>
+<sub>last updated 25 Jul 2026 — automatically</sub>
 <!--NOW-END-->
 
 ---
