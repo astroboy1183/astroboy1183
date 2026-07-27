@@ -49,13 +49,13 @@ AWS Certified Cloud Practitioner (2023)
 agents, no hands involved.*
 
 <!--NOW-START-->
-⚙️ **27 commits** across 6 repos this week
+⚙️ **46 commits** across 5 repos this week
 
-🚢 last shipped: *"Recruiter-facing skills: grouped tech-stack chips at top of "* in `study-agent`
+🚢 last shipped: *"Notes in first person: model writes them as my own study not"* in `study-agent`
 
 🤖 agent fleet: **0/8 green** yesterday
 
-<sub>last updated 26 Jul 2026 — automatically</sub>
+<sub>last updated 27 Jul 2026 — automatically</sub>
 <!--NOW-END-->
 
 ---
