@@ -49,13 +49,13 @@ AWS Certified Cloud Practitioner (2023)
 agents, no hands involved.*
 
 <!--NOW-START-->
-⚙️ **46 commits** across 5 repos this week
+⚙️ **30 commits** across 6 repos this week
 
-🚢 last shipped: *"Notes in first person: model writes them as my own study not"* in `study-agent`
+🚢 last shipped: *"Add Computer Vision as a priority track (served before the 6"* in `study-agent`
 
 🤖 agent fleet: **0/8 green** yesterday
 
-<sub>last updated 01 Aug 2026 — automatically</sub>
+<sub>last updated 02 Aug 2026 — automatically</sub>
 <!--NOW-END-->
 
 ---
