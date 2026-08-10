@@ -49,13 +49,9 @@ AWS Certified Cloud Practitioner (2023)
 agents, no hands involved.*
 
 <!--NOW-START-->
-⚙️ **44 commits** across 7 repos this week
-
-🚢 last shipped: *"Dashboard: cut length ~64% (audit fixes)"* in `study-agent`
-
 🤖 agent fleet: **0/8 green** yesterday
 
-<sub>last updated 09 Aug 2026 — automatically</sub>
+<sub>last updated 10 Aug 2026 — automatically</sub>
 <!--NOW-END-->
 
 ---
