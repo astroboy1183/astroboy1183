@@ -49,13 +49,13 @@ AWS Certified Cloud Practitioner (2023)
 agents, no hands involved.*
 
 <!--NOW-START-->
-⚙️ **38 commits** across 11 repos this week
+⚙️ **13 commits** across 1 repos this week
 
-🚢 last shipped: *"v1: 8 franchises, 3D auction hall, richer sound"* in `auctionroom`
+🚢 last shipped: *"fix: four defects found by driving the built app"* in `auctionroom`
 
 🤖 agent fleet: **0/8 green** yesterday
 
-<sub>last updated 22 Aug 2026 — automatically</sub>
+<sub>last updated 23 Aug 2026 — automatically</sub>
 <!--NOW-END-->
 
 ---
