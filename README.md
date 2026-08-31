@@ -49,13 +49,9 @@ AWS Certified Cloud Practitioner (2023)
 agents, no hands involved.*
 
 <!--NOW-START-->
-⚙️ **15 commits** across 2 repos this week
-
-🚢 last shipped: *"Point README at the production domain"* in `claude-handbook`
-
 🤖 agent fleet: **0/8 green** yesterday
 
-<sub>last updated 30 Aug 2026 — automatically</sub>
+<sub>last updated 31 Aug 2026 — automatically</sub>
 <!--NOW-END-->
 
 ---
