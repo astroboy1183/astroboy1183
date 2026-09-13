@@ -49,13 +49,13 @@ AWS Certified Cloud Practitioner (2023)
 agents, no hands involved.*
 
 <!--NOW-START-->
-⚙️ **27 commits** across 1 repos this week
+⚙️ **5 commits** across 1 repos this week
 
 🚢 last shipped: *"docs: v2.0 checklist in the README"* in `tech-news-agent`
 
 🤖 agent fleet: **0/8 green** yesterday
 
-<sub>last updated 12 Sep 2026 — automatically</sub>
+<sub>last updated 13 Sep 2026 — automatically</sub>
 <!--NOW-END-->
 
 ---
