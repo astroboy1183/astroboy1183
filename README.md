@@ -51,7 +51,7 @@ agents, no hands involved.*
 <!--NOW-START-->
 🤖 agent fleet: **0/8 green** yesterday
 
-<sub>last updated 22 Sep 2026 — automatically</sub>
+<sub>last updated 23 Sep 2026 — automatically</sub>
 <!--NOW-END-->
 
 ---
